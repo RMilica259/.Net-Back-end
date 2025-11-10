@@ -2,16 +2,17 @@
 using ECommerceApp.Models;
 using ECommerceApp.Data;
 using Microsoft.AspNetCore.Mvc;
+using ECommerceApp.Repository.IRepository;
 
 namespace ECommerceApp.Controllers
 {
     public class OrderController : ControllerBase
     {
-        public AppDbContext _context;
+        private readonly IRepository<Order> _orderRepository;
 
-        public OrderController(AppDbContext context)
+        public OrderController(IRepository<Order> orderRepository)
         {
-            _context = context;
+            _orderRepository = orderRepository;  //DI
         }
         
         public IActionResult PlaceOrder(int customerId, string city, string street, string houseNumber, string zipCode, string phoneNumber)
@@ -28,8 +29,8 @@ namespace ECommerceApp.Controllers
                 TotalAmount = 0,
                 DiscountAmount = 0 
             };
-            _context.Orders.Add(order);
-            _context.SaveChanges();
+            _orderRepository.Add(order);
+            _orderRepository.SaveChanges();
             return Ok(order);
         }
     }
