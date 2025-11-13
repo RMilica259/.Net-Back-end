@@ -1,31 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ECommerceApp.Models;
-using ECommerceApp.Data;
+using ECommerceApp.Infrastructure.Models;
+using ECommerceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using ECommerceApp.Repository.IRepository;
+using ECommerceApp.Domain.IRepository;
+using ECommerceApp.Domain.Entities;
 
-namespace ECommerceApp.Controllers
+namespace ECommerceApp.Web.Controllers
 {
     public class ShoppingCartController : ControllerBase
     {
-        private readonly IRepository<CartItem> _cartItemRepository;
-
-        public ShoppingCartController(IRepository<CartItem> cartItemRepository)
+        private readonly IShoppingCartRepository _shoppingCartRepository;
+        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository)
         {
-            _cartItemRepository = cartItemRepository;
+            _shoppingCartRepository = shoppingCartRepository;
         }
-
-        public IActionResult AddToCart(int customerId, int productId, int quantity)
+        public async Task<IActionResult> AddToCart(CartItemEntity cart)
         {
-            var cartItem = new CartItem
-            {
-                CustomerId = customerId,
-                ProductId = productId,
-                Quantity = quantity
-            };
-            _cartItemRepository.Add(cartItem);
-            _cartItemRepository.SaveChanges();
-            return Ok(cartItem);
+            await _shoppingCartRepository.AddToCart(cart);
+            return Ok();
         }
     }
 }

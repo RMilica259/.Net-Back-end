@@ -1,4 +1,4 @@
-﻿namespace ECommerceApp.Models
+﻿namespace ECommerceApp.Infrastructure.Models
 {
     public class Product
     {

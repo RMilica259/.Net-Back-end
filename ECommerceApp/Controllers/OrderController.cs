@@ -1,37 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ECommerceApp.Models;
-using ECommerceApp.Data;
+using ECommerceApp.Infrastructure.Models;
+using ECommerceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using ECommerceApp.Repository.IRepository;
+using ECommerceApp.Domain.IRepository;
+using ECommerceApp.Domain.Entities;
 
-namespace ECommerceApp.Controllers
+namespace ECommerceApp.Web.Controllers
 {
     public class OrderController : ControllerBase
     {
-        private readonly IRepository<Order> _orderRepository;
-
-        public OrderController(IRepository<Order> orderRepository)
+        private readonly IOrderRepository _orderRepository;
+        public OrderController(IOrderRepository orderRepository)
         {
-            _orderRepository = orderRepository;  //DI
+            _orderRepository = orderRepository;
         }
-        
-        public IActionResult PlaceOrder(int customerId, string city, string street, string houseNumber, string zipCode, string phoneNumber)
+        public async Task<IActionResult> PlaceOrder(OrderEntity order)
         {
-          
-            var order = new Order
-            {
-                CustomerId = customerId,
-                City = city,
-                Street = street,
-                HouseNumber = houseNumber,
-                ZipCode = zipCode,
-                PhoneNumber = phoneNumber,
-                TotalAmount = 0,
-                DiscountAmount = 0 
-            };
-            _orderRepository.Add(order);
-            _orderRepository.SaveChanges();
-            return Ok(order);
+            await _orderRepository.PlaceOrder(order);
+            return Ok();
         }
     }
 }

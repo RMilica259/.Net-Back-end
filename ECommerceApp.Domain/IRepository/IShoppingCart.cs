@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ECommerceApp.Domain.Entities;
+
+namespace ECommerceApp.Domain.IRepository
+{
+    public interface IShoppingCartRepository
+    {
+        Task AddToCart(CartItemEntity cart);
+    }
+}

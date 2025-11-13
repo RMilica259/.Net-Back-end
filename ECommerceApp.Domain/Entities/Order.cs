@@ -1,6 +1,6 @@
-﻿namespace ECommerceApp.Models
+﻿namespace ECommerceApp.Domain.Entities
 {
-    public class Order
+    public class OrderEntity
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
