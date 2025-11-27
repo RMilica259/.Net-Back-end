@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ECommerceApp.Domain.Entities;
 
-namespace ECommerceApp.Domain.IRepository
+namespace ECommerceApp.Application.IRepository
 {
     public interface IShoppingCartRepository
     {

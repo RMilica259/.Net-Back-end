@@ -1,5 +1,5 @@
 ﻿using ECommerceApp.Domain.Entities;
-using ECommerceApp.Domain.IRepository;
+using ECommerceApp.Application.IRepository;
 using ECommerceApp.Infrastructure.Data;
 using ECommerceApp.Infrastructure.Models;
 using System;
@@ -24,7 +24,7 @@ namespace ECommerceApp.Infrastructure.Repository
             {
                 CustomerId = cart.CustomerId,
                 ProductId = cart.ProductId,
-                Quantity = cart.Quantity
+                Quantity = cart.Quantity.Value
             };
             _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();

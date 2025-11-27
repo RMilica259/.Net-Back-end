@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceApp.Domain.IRepository
+namespace ECommerceApp.Application.IRepository
 {
     public interface IOrderRepository
     {

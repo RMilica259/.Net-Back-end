@@ -2,7 +2,7 @@
 using ECommerceApp.Infrastructure.Models;
 using ECommerceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using ECommerceApp.Domain.IRepository;
+using ECommerceApp.Application.IRepository;
 using ECommerceApp.Domain.Entities;
 
 namespace ECommerceApp.Web.Controllers
