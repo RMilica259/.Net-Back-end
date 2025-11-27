@@ -1,17 +1,25 @@
-﻿namespace ECommerceApp.Domain.Entities
+﻿using ECommerceApp.Domain.ValueObjects;
+
+namespace ECommerceApp.Domain.Entities
 {
     public class OrderEntity
     {
+            public OrderEntity(int customerId, Address shippingAddress, string phoneNumber, decimal totalAmount, decimal discountAmount, DateTime orderDate)
+            {
+                CustomerId = customerId;
+                ShippingAddress = shippingAddress;
+                PhoneNumber = phoneNumber;
+                TotalAmount = totalAmount;
+                DiscountAmount = discountAmount;
+                OrderDate = orderDate;
+        }
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public string City { get; set; } = "";
-        public string Street { get; set; } = "";
-        public string HouseNumber { get; set; } = "";
-        public string ZipCode { get; set; } = "";
-        public string PhoneNumber { get; set; } = "";
-        public decimal TotalAmount { get; set; }
-        public decimal DiscountAmount { get; set; }
-        public DateTime OrderDate { get; set; } = DateTime.Now;
+        public Address ShippingAddress { get; } 
+        public string PhoneNumber { get; } 
+        public decimal TotalAmount { get; }
+        public decimal DiscountAmount { get; }
+        public DateTime OrderDate { get; } 
 
     }
 }

@@ -1,11 +1,19 @@
-﻿namespace ECommerceApp.Domain.Entities
+﻿using ECommerceApp.Domain.ValueObjects;
+
+namespace ECommerceApp.Domain.Entities
 {
     public class CartItemEntity
     {
+        public CartItemEntity(int customerId, int productId, Quantity quantity, ProductEntity product) {
+            CustomerId = customerId;
+            ProductId = productId;
+            Quantity = quantity;
+            Product = product;
+        }
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
-        public ProductEntity? Product { get; set; }
+        public int ProductId { get; }
+        public Quantity Quantity { get; }
+        public ProductEntity? Product { get; }
     }
 }
