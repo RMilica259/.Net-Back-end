@@ -4,19 +4,23 @@ using ECommerceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceApp.Application.IRepository;
 using ECommerceApp.Domain.Entities;
+using MediatR;
 
 namespace ECommerceApp.Web.Controllers
 {
+    [Route("cart")]
     public class ShoppingCartController : ControllerBase
     {
-        private readonly IShoppingCartRepository _shoppingCartRepository;
-        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository)
+        private readonly IMediator _mediator;
+        public ShoppingCartController(IMediator mediator)
         {
-            _shoppingCartRepository = shoppingCartRepository;
+            _mediator = mediator;
         }
+
+        [HttpPost]
         public async Task<IActionResult> AddToCart(CartItemEntity cart)
         {
-            await _shoppingCartRepository.AddToCart(cart);
+            await _mediator.Send(Request);
             return Ok();
         }
     }
