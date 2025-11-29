@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
+namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {
-    public class CreateOrderCommand
+    public class CartItemDto
     {
     }
 }

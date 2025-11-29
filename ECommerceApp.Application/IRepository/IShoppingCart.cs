@@ -10,5 +10,7 @@ namespace ECommerceApp.Application.IRepository
     public interface IShoppingCartRepository
     {
         Task AddToCart(CartItemEntity cart);
+        Task<CartItemEntity?> GetById(int id);
+        Task ClearCart(int customerId);
     }
 }
