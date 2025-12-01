@@ -45,6 +45,40 @@ namespace ECommerceApp.Infrastructure.Repository
             }
         }
 
+        public async Task<IEnumerable<CartItemEntity>> GetAll(int customerId)
+        {
+            var cartItems = await _context.CartItems
+                .Where(x => x.CustomerId == customerId)
+                .ToListAsync();
+
+            var result = new List<CartItemEntity>();
+
+            foreach (var item in cartItems)
+            {
+                var product = await _productRepository.GetById(item.ProductId);
+
+                if (product == null)
+                    continue;
+
+                var quantity = new Quantity(item.Quantity);
+
+                var entity = new CartItemEntity(
+                    item.CustomerId,
+                    item.ProductId,
+                    quantity,
+                    product
+                )
+                {
+                    Id = item.Id
+                };
+
+                result.Add(entity);
+            }
+
+            return result;
+        }
+
+
         public async Task<CartItemEntity?> GetById(int id)
         {
             var cartItem = _context.CartItems.FirstOrDefault(x => x.Id == id);

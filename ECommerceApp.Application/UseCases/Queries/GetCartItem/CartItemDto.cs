@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ECommerceApp.Domain.Entities;
+using ECommerceApp.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,10 @@ namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {
     public class CartItemDto
     {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; } = "";
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public decimal Total => Price * Quantity;
     }
 }

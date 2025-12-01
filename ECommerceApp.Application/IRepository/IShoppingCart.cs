@@ -11,6 +11,7 @@ namespace ECommerceApp.Application.IRepository
     {
         Task AddToCart(CartItemEntity cart);
         Task<CartItemEntity?> GetById(int id);
+        Task<IEnumerable<CartItemEntity>> GetAll(int customerId);
         Task ClearCart(int customerId);
     }
 }
