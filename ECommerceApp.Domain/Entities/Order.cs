@@ -1,10 +1,8 @@
-﻿using ECommerceApp.Domain.ValueObjects;
-
-namespace ECommerceApp.Domain.Entities
+﻿namespace ECommerceApp.Domain.Entities
 {
     public class OrderEntity
     {
-            public OrderEntity(int customerId, Address shippingAddress, string phoneNumber, decimal totalAmount, decimal discountAmount, DateTime orderDate)
+            public OrderEntity(int customerId, AddressEntity shippingAddress, string phoneNumber, decimal totalAmount, decimal discountAmount, DateTime orderDate)
             {
                 CustomerId = customerId;
                 ShippingAddress = shippingAddress;
@@ -15,7 +13,7 @@ namespace ECommerceApp.Domain.Entities
         }
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public Address ShippingAddress { get; } 
+        public AddressEntity ShippingAddress { get; } 
         public string PhoneNumber { get; } 
         public decimal TotalAmount { get; }
         public decimal DiscountAmount { get; }

@@ -37,7 +37,7 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
             decimal totalAmount = 0;
             decimal discountAmount = 0;
 
-            var address = new Address(
+            var address = new AddressEntity(
                 request.ShippingAddress.City,
                 request.ShippingAddress.Street,
                 request.ShippingAddress.HouseNumber,

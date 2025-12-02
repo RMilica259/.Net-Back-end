@@ -18,10 +18,15 @@ namespace ECommerceApp.Infrastructure.Repository
             var order = new Order
             {
                 CustomerId = orderEntity.CustomerId,
-                City = orderEntity.ShippingAddress.City,
-                Street = orderEntity.ShippingAddress.Street,
-                HouseNumber = orderEntity.ShippingAddress.HouseNumber,
-                ZipCode = orderEntity.ShippingAddress.ZipCode,
+
+                Address = new Address
+                {
+                    City = orderEntity.ShippingAddress.City,
+                    Street = orderEntity.ShippingAddress.Street,
+                    HouseNumber = orderEntity.ShippingAddress.HouseNumber,
+                    ZipCode = orderEntity.ShippingAddress.ZipCode
+                },
+
                 PhoneNumber = orderEntity.PhoneNumber,
                 TotalAmount = 0,
                 DiscountAmount = 0 
