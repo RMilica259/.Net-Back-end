@@ -22,7 +22,7 @@ namespace ECommerceApp.Infrastructure.Repository
             _productRepository = productRepository;
         }
 
-        public async Task AddToCart(CartItemEntity cart)
+        public async Task Add(CartItemEntity cart)
         {
             var cartItem = new CartItem
             {
@@ -34,7 +34,7 @@ namespace ECommerceApp.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task ClearCart(int customerId)
+        public async Task Clear(int customerId)
         {
             var cartItems = await _context.CartItems.Where(x => x.CustomerId == customerId).ToListAsync();
 

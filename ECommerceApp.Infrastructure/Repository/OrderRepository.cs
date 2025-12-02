@@ -13,7 +13,7 @@ namespace ECommerceApp.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task PlaceOrder(OrderEntity orderEntity)
+        public async Task Create(OrderEntity orderEntity)
         {
             var order = new Order
             {

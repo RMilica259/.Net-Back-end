@@ -53,9 +53,9 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
                 _dateTimeProvider.UtcNow() 
             );
 
-            await _orderRepository.PlaceOrder(order);
+            await _orderRepository.Create(order);
 
-            await _shoppingCartRepository.ClearCart(request.CustomerId);
+            await _shoppingCartRepository.Clear(request.CustomerId);
 
             return Result.Success();
         }

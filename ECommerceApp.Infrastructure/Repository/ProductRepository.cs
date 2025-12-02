@@ -21,8 +21,7 @@ namespace ECommerceApp.Infrastructure.Repository
 
             return new ProductEntity(
                product.Name,
-               product.Price,
-               product.LocalPrice
+               product.Price
             )
             { Id = id };
         }

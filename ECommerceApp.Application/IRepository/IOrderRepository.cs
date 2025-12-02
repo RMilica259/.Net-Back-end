@@ -9,6 +9,6 @@ namespace ECommerceApp.Application.IRepository
 {
     public interface IOrderRepository
     {
-        Task PlaceOrder(OrderEntity order);
+        Task Create(OrderEntity order);
     }
 }

@@ -37,7 +37,7 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
                product
             );
 
-            await _shoppingCartRepository.AddToCart(cartItem);
+            await _shoppingCartRepository.Add(cartItem);
 
             return Result.Success();
         }
