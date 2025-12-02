@@ -81,25 +81,15 @@ namespace ECommerceApp.Infrastructure.Repository
 
         public async Task<CartItemEntity?> GetById(int id)
         {
-            var cartItem = _context.CartItems.FirstOrDefault(x => x.Id == id);
-
-            if (cartItem == null) return null;
-
-            var product = await _productRepository.GetById(cartItem.ProductId);
-
-            if (product == null) return null;
-
-            var quantity = new Quantity(cartItem.Quantity);
-
-            return new CartItemEntity(
-                cartItem.CustomerId,
-                cartItem.ProductId,
-                quantity,
-                product
-            )
-            { 
-                Id  = cartItem.Id 
-            };
+            return await _context.CartItems
+                .Select(x => new CartItemEntity(
+                    x.CustomerId, 
+                    x.ProductId, 
+                    new Quantity(x.Quantity),
+                    new ProductEntity(x.Product.Name, x.Product.Price) { Id = x.Product.Id })
+                    { Id = x.Id }
+                )
+                .SingleOrDefaultAsync(x => x.Id == id);  
         }
     }
 }

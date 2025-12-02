@@ -6,6 +6,7 @@ using ECommerceApp.Application.IRepository;
 using ECommerceApp.Domain.Entities;
 using MediatR;
 using ECommerceApp.Application.UseCases.Queries.GetCartItem;
+using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
 
 namespace ECommerceApp.Web.Controllers
 {
@@ -19,10 +20,13 @@ namespace ECommerceApp.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart(CartItemEntity cart)
-        {
-            await _mediator.Send(Request);
-            return Ok();
+        public async Task<IActionResult> AddToCart(AddProductToCartRequest request)
+        { 
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccessful) return BadRequest(result.Message);
+
+            return Ok(result);
         }
 
         [HttpGet]
