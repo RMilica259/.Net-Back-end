@@ -1,5 +1,6 @@
 ﻿using ECommerceApp.Application.IRepository;
 using ECommerceApp.Domain.Entities;
+using ECommerceApp.Domain.ValueObjects;
 using ECommerceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,8 @@ namespace ECommerceApp.Infrastructure.Repository
 
             return new ProductEntity(
                product.Name,
-               product.Price
+               product.Price,
+               new Quantity(product.Quantity)
             )
             { Id = id };
         }

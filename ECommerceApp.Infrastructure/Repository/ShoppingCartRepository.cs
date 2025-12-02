@@ -86,7 +86,7 @@ namespace ECommerceApp.Infrastructure.Repository
                     x.CustomerId, 
                     x.ProductId, 
                     new Quantity(x.Quantity),
-                    new ProductEntity(x.Product.Name, x.Product.Price) { Id = x.Product.Id })
+                    new ProductEntity(x.Product.Name, x.Product.Price, new Quantity(x.Product.Quantity)) { Id = x.Product.Id })
                     { Id = x.Id }
                 )
                 .SingleOrDefaultAsync(x => x.Id == id);  
