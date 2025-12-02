@@ -9,6 +9,8 @@ using ECommerceApp.Application.UseCases.Commands.CreateOrder;
 
 namespace ECommerceApp.Web.Controllers
 {
+    [ApiController]
+    [Route("order")]
     public class OrderController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -16,6 +18,8 @@ namespace ECommerceApp.Web.Controllers
         {
             _mediator = mediator;
         }
+
+        [HttpPost]
         public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
         {
             var result = await _mediator.Send(request);

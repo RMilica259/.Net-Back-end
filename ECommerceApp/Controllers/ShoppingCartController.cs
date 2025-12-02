@@ -10,6 +10,7 @@ using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
 
 namespace ECommerceApp.Web.Controllers
 {
+    [ApiController]
     [Route("cart")]
     public class ShoppingCartController : ControllerBase
     {
