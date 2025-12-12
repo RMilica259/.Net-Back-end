@@ -45,6 +45,23 @@ namespace ECommerceApp.Infrastructure.Repository
             }
         }
 
+        public async Task CreateCart(CartEntity cart)
+        {
+            var c = new Cart
+            {
+                CustomerId = cart.CustomerId,
+                Items = cart.Items.Select(x => new CartItem
+                {
+                    CustomerId = x.CustomerId,
+                    ProductId = x.ProductId,
+                    Quantity = x.Quantity.Value
+                }).ToList()
+            };
+
+            _context.Carts.Add(c);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<CartItemEntity>> GetAll(int customerId)
         {
             var cartItems = await _context.CartItems
@@ -90,6 +107,25 @@ namespace ECommerceApp.Infrastructure.Repository
                     { Id = x.Id }
                 )
                 .SingleOrDefaultAsync(x => x.Id == id);  
+        }
+
+        public async Task<CartEntity?> GetCartById(int customerId)
+        {
+            return await _context.Carts
+                .Select(x => new CartEntity(
+                    x.CustomerId
+                )
+                {
+                    Id = x.Id,
+                    Items = x.Items.Select(ci => new CartItemEntity(
+                        ci.CustomerId,
+                        ci.ProductId,
+                        new Quantity(ci.Quantity),
+                        new ProductEntity(ci.Product.Name, ci.Product.Price, new Quantity(ci.Product.Quantity)) { Id = ci.Product.Id })
+                    { Id = ci.Id }
+                    ).ToList()
+                })
+                .SingleOrDefaultAsync (x => x.CustomerId == customerId);
         }
     }
 }
