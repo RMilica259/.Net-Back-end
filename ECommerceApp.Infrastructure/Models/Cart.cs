@@ -10,6 +10,7 @@ namespace ECommerceApp.Infrastructure.Models
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public decimal Total { get; set; }
         public List<CartItem> Items { get; set;} = new List<CartItem>();
     }
 }
