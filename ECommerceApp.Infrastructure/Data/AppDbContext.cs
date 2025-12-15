@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ECommerceApp.Infrastructure.Configurations;
 using ECommerceApp.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Infrastructure.Data
 {
@@ -24,6 +25,11 @@ namespace ECommerceApp.Infrastructure.Data
                 });
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new CartConfiguration());
+            modelBuilder.ApplyConfiguration(new CartItemConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
     }
 }

@@ -13,6 +13,8 @@ namespace ECommerceApp.Domain.Entities
         public int Id { get; set; }
         public int CustomerId { get; set; }
         public int ProductId { get; }
+        public int CartId { get; }
+        public CartEntity CartEntity { get; }
         public Quantity Quantity { get; }
         public ProductEntity? Product { get; }
     }
