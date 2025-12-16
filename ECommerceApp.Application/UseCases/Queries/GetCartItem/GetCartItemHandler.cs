@@ -11,24 +11,16 @@ namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {
     public class GetCartItemHandler : IRequestHandler<GetCartItemRequest, IEnumerable<CartItemDto>>
     {
-        IShoppingCartRepository _shoppingCartRepository;
-        public GetCartItemHandler(IShoppingCartRepository shoppingCartRepository)
+        private readonly IGetCartItemQuery _query;
+        public GetCartItemHandler(IGetCartItemQuery query)
         {
-            _shoppingCartRepository = shoppingCartRepository;
+            _query = query;
         }
 
         async Task<IEnumerable<CartItemDto>> IRequestHandler<GetCartItemRequest, IEnumerable<CartItemDto>>.Handle(GetCartItemRequest request, CancellationToken cancellationToken)
         {
-            var cartItem = await _shoppingCartRepository.GetAll(request.CustomerId);
-
-            var result = cartItem.Select(cItem => new CartItemDto
-            {
-                ProductId = cItem.ProductId,
-                ProductName = cItem.Product.Name,
-                Price = cItem.Product.Price,
-                Quantity = cItem.Quantity.Value
-            });
-            return result;
+            var cartItem = await _query.Execute(request.CustomerId);
+            return cartItem;
         }
     }
 }

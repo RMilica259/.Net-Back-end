@@ -33,6 +33,7 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
             (
                request.CustomerId,
                request.ProductId,
+               request.CartId,
                quantity,
                product
             );
