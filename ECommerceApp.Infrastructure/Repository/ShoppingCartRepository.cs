@@ -28,6 +28,7 @@ namespace ECommerceApp.Infrastructure.Repository
             {
                 CustomerId = cart.CustomerId,
                 ProductId = cart.ProductId,
+                CartId = cart.CartId,
                 Quantity = cart.Quantity.Value
             };
             _context.CartItems.Add(cartItem);
@@ -54,6 +55,7 @@ namespace ECommerceApp.Infrastructure.Repository
                 {
                     CustomerId = x.CustomerId,
                     ProductId = x.ProductId,
+                    CartId = x.CartId,
                     Quantity = x.Quantity.Value
                 }).ToList()
             };
@@ -82,6 +84,7 @@ namespace ECommerceApp.Infrastructure.Repository
                 var entity = new CartItemEntity(
                     item.CustomerId,
                     item.ProductId,
+                    item.CartId,
                     quantity,
                     product
                 )
@@ -102,6 +105,7 @@ namespace ECommerceApp.Infrastructure.Repository
                 .Select(x => new CartItemEntity(
                     x.CustomerId, 
                     x.ProductId, 
+                    x.CartId,
                     new Quantity(x.Quantity),
                     new ProductEntity(x.Product.Name, x.Product.Price, new Quantity(x.Product.Quantity)) { Id = x.Product.Id })
                     { Id = x.Id }
@@ -120,6 +124,7 @@ namespace ECommerceApp.Infrastructure.Repository
                     Items = x.Items.Select(ci => new CartItemEntity(
                         ci.CustomerId,
                         ci.ProductId,
+                        ci.CartId,
                         new Quantity(ci.Quantity),
                         new ProductEntity(ci.Product.Name, ci.Product.Price, new Quantity(ci.Product.Quantity)) { Id = ci.Product.Id })
                     { Id = ci.Id }

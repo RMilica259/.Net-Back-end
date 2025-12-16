@@ -4,9 +4,10 @@ namespace ECommerceApp.Domain.Entities
 {
     public class CartItemEntity
     {
-        public CartItemEntity(int customerId, int productId, Quantity quantity, ProductEntity product) {
+        public CartItemEntity(int customerId, int productId, int cartId, Quantity quantity, ProductEntity product) {
             CustomerId = customerId;
             ProductId = productId;
+            CartId = cartId;
             Quantity = quantity;
             Product = product;
         }
