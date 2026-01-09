@@ -20,7 +20,7 @@ namespace ECommerceApp.Infrastructure.Configurations
             builder.Property(e => e.Id).UseIdentityColumn();
 
             builder.Property(e => e.CustomerId).IsRequired();
-            builder.Property(e => e.PhoneNumber).IsRequired();
+            builder.Property(e => e.PhoneNumber).HasMaxLength(10).IsRequired();
             builder.Property(e => e.TotalAmount).IsRequired();
             builder.Property(e => e.OrderDate).IsRequired();
 
