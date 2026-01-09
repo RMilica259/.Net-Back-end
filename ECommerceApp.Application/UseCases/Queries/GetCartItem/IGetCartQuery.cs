@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {
-    public interface IGetCartItemQuery
+    public interface IGetCartQuery
     {
-        Task<IEnumerable<CartItemDto>> Execute(int id);
+        Task<CartDto?> Execute(int customerId);
     }
 }

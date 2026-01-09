@@ -20,7 +20,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-builder.Services.AddScoped<IGetCartItemQuery, GetCartItemQuery>();
+builder.Services.AddScoped<IGetCartQuery, GetCartQuery>();
 
 
 builder.Services.AddMediatR(cfg =>

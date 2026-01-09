@@ -9,25 +9,32 @@ using System.Threading.Tasks;
 
 namespace ECommerceApp.Infrastructure.Queries
 {
-    public class GetCartItemQuery : IGetCartItemQuery
+    public class GetCartQuery : IGetCartQuery
     {
         private readonly AppDbContext _context;
-        public GetCartItemQuery(AppDbContext context)
+        public GetCartQuery(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<CartItemDto>> Execute(int id)
+        public async Task<CartDto?> Execute(int customerId)
         {
-            return await _context.CartItems
-                .Where(x => x.Cart.CustomerId == id)
-                .Select(x => new CartItemDto()
+            return await _context.Carts
+                .Where(x => x.CustomerId == customerId)
+                .Select(x => new CartDto()
                 {
-                    ProductId = x.ProductId,
-                    ProductName = x.Product.Name,
-                    Price = x.Product.Price,
-                    Quantity = x.Quantity
-                }).ToListAsync();
+                    CartId = x.Id,
+                    CustomerId = x.CustomerId,
+                    Total = x.Total,
+                    Items = x.Items.Select(ci => new CartItemDto
+                    {
+                        ProductId = ci.ProductId,
+                        ProductName = ci.Product.Name,
+                        Price = ci.Product.Price,
+                        Quantity = ci.Quantity
+                    }).ToList()
+                })
+        .SingleOrDefaultAsync();
         }
     }
 }

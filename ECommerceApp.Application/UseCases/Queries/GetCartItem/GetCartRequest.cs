@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {
-    public class GetCartItemRequest : IRequest<IEnumerable<CartItemDto>>
+    public class GetCartRequest : IRequest<CartDto?>
     {
         public int CustomerId { get; set; }
     }

@@ -33,7 +33,7 @@ namespace ECommerceApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCartItems(int customerId)
         {
-            var request = new GetCartItemRequest { CustomerId = customerId };
+            var request = new GetCartRequest { CustomerId = customerId };
 
             var result = await _mediator.Send(request);
 
