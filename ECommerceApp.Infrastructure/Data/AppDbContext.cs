@@ -13,23 +13,20 @@ namespace ECommerceApp.Infrastructure.Data
         public DbSet<CartItem> CartItems { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Cart> Carts { get; set; } = null!;
+        public DbSet<Customer> Customers { get; set; } = null!;
+        public DbSet<CustomerAddress> CustomerAddresses { get; set; } = null!;
+        public DbSet<Address> Addresses { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Order>()
-                .OwnsOne(o => o.Address, a =>
-                {
-                    a.Property(x => x.City).HasColumnName("City");
-                    a.Property(x => x.Street).HasColumnName("Street");
-                    a.Property(x => x.HouseNumber).HasColumnName("HouseNumber");
-                    a.Property(x => x.ZipCode).HasColumnName("ZipCode");
-                });
-
+        { 
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new CartItemConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerAddressConfiguration());
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
         }
     }
 }

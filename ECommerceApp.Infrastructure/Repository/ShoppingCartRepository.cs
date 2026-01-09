@@ -26,7 +26,6 @@ namespace ECommerceApp.Infrastructure.Repository
         {
             var cartItem = new CartItem
             {
-                CustomerId = cart.CustomerId,
                 ProductId = cart.ProductId,
                 CartId = cart.CartId,
                 Quantity = cart.Quantity.Value
@@ -37,7 +36,7 @@ namespace ECommerceApp.Infrastructure.Repository
 
         public async Task Clear(int customerId)
         {
-            var cartItems = await _context.CartItems.Where(x => x.CustomerId == customerId).ToListAsync();
+            var cartItems = await _context.CartItems.Where(x => x.Cart.CustomerId == customerId).ToListAsync();
 
             if (cartItems.Count > 0)
             {
@@ -53,7 +52,6 @@ namespace ECommerceApp.Infrastructure.Repository
                 CustomerId = cart.CustomerId,
                 Items = cart.Items.Select(x => new CartItem
                 {
-                    CustomerId = x.CustomerId,
                     ProductId = x.ProductId,
                     CartId = x.CartId,
                     Quantity = x.Quantity.Value
@@ -67,7 +65,7 @@ namespace ECommerceApp.Infrastructure.Repository
         public async Task<IEnumerable<CartItemEntity>> GetAll(int customerId)
         {
             var cartItems = await _context.CartItems
-                .Where(x => x.CustomerId == customerId)
+                .Where(x => x.Cart.CustomerId == customerId)
                 .ToListAsync();
 
             var result = new List<CartItemEntity>();
@@ -82,7 +80,6 @@ namespace ECommerceApp.Infrastructure.Repository
                 var quantity = new Quantity(item.Quantity);
 
                 var entity = new CartItemEntity(
-                    item.CustomerId,
                     item.ProductId,
                     item.CartId,
                     quantity,
@@ -102,8 +99,8 @@ namespace ECommerceApp.Infrastructure.Repository
         public async Task<CartItemEntity?> GetById(int id)
         {
             return await _context.CartItems
-                .Select(x => new CartItemEntity(
-                    x.CustomerId, 
+                .Include(x => x.Product)
+                .Select(x => new CartItemEntity( 
                     x.ProductId, 
                     x.CartId,
                     new Quantity(x.Quantity),
@@ -122,7 +119,6 @@ namespace ECommerceApp.Infrastructure.Repository
                 {
                     Id = x.Id,
                     Items = x.Items.Select(ci => new CartItemEntity(
-                        ci.CustomerId,
                         ci.ProductId,
                         ci.CartId,
                         new Quantity(ci.Quantity),

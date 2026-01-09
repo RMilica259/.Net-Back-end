@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+        public int AddressId { get; set; }
         public Address? Address { get; set; } 
         public string PhoneNumber { get; set; } = "";
         public decimal TotalAmount { get; set; }

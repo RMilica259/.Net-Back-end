@@ -20,7 +20,6 @@ namespace ECommerceApp.Infrastructure.Configurations
 
             builder.Property(e  => e.Id).UseIdentityColumn();
 
-            builder.Property(e => e.CustomerId).IsRequired();
             builder.Property(e => e.ProductId).IsRequired();
             builder.Property(e => e.CartId).IsRequired();
             builder.Property(e => e.Quantity).IsRequired();

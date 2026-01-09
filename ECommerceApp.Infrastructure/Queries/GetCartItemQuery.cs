@@ -20,7 +20,7 @@ namespace ECommerceApp.Infrastructure.Queries
         public async Task<IEnumerable<CartItemDto>> Execute(int id)
         {
             return await _context.CartItems
-                .Where(x => x.CustomerId == id)
+                .Where(x => x.Cart.CustomerId == id)
                 .Select(x => new CartItemDto()
                 {
                     ProductId = x.ProductId,

@@ -31,7 +31,6 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
 
             var cartItem = new CartItemEntity
             (
-               request.CustomerId,
                request.ProductId,
                request.CartId,
                quantity,

@@ -24,13 +24,14 @@ namespace ECommerceApp.Infrastructure.Configurations
             builder.Property(e => e.TotalAmount).IsRequired();
             builder.Property(e => e.OrderDate).IsRequired();
 
-            builder.OwnsOne(e => e.Address, address =>
-            {
-                address.Property(e => e.City).IsRequired();
-                address.Property(e => e.Street).IsRequired();
-                address.Property(e => e.HouseNumber).IsRequired();
-                address.Property(e => e.ZipCode).IsRequired();
-            });
+            builder.HasOne(x => x.Customer)
+                   .WithMany(x => x.Orders)
+                   .HasForeignKey(x => x.CustomerId);
+
+            builder.HasOne(x => x.Address)
+                   .WithMany()
+                   .HasForeignKey(x => x.AddressId)
+                   .IsRequired();
         }
     }
 }

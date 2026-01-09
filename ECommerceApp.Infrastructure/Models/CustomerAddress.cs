@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ECommerceApp.Infrastructure.Models
 {
-    public class Cart
+    public class CustomerAddress
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public decimal Total { get; set; }
-        public List<CartItem> Items { get; set;} = new List<CartItem>();
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
+        public bool IsDefault { get; set; }
     }
 }

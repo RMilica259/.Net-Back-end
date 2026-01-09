@@ -8,6 +8,6 @@ namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {
     public interface IGetCartItemQuery
     {
-        Task<IEnumerable<CartItemDto?>> Execute(int id);
+        Task<IEnumerable<CartItemDto>> Execute(int id);
     }
 }
