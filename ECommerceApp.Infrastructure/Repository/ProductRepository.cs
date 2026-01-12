@@ -23,9 +23,8 @@ namespace ECommerceApp.Infrastructure.Repository
             return new ProductEntity(
                product.Name,
                product.Price,
-               new Quantity(product.Quantity)
-            )
-            { Id = id };
+               Quantity.FromInt(product.Quantity)
+            );
         }
     }
 }

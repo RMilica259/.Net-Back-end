@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerceApp.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,16 @@ namespace ECommerceApp.Domain.Entities
             CustomerId = customerId;
         }
 
-        public int Id { get; set; }
-        public int CustomerId { get; private set; }
-        public decimal Total { get; private set; }
-        public List<CartItemEntity> Items { get; set; } = new List<CartItemEntity>();
+        public int CustomerId { get; }
+        public List<CartItemEntity> Items = new ();
 
-        public void RecalculateTotal()
+        public IReadOnlyCollection<CartItemEntity> items => Items;
+
+        public void AddItem(CartItemEntity cart)
         {
-            Total = Items.Sum(i => i.Product.Price * i.Quantity.Value);
+            Items.Add(cart);
         }
+
+        public decimal Total() => Items.Sum(i => i.TotalPrice());
     }
 }

@@ -14,7 +14,7 @@ namespace ECommerceApp.Domain.Entities
             Email = email;
             Addresses = new List<AddressEntity>();
         }
-        public int Id { get; set; }
+
         public string Name { get; }
         public string Email { get; }
         public List<AddressEntity> Addresses { get; }

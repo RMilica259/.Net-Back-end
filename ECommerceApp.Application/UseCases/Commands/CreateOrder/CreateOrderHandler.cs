@@ -30,11 +30,13 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
 
         public async Task<Result> Handle(CreateOrderRequest request, CancellationToken cancellationToken)
         {
-            var cartItems = await _shoppingCartRepository.GetById(request.CustomerId);
+            var cart = await _shoppingCartRepository.GetCartById(request.CustomerId);
 
-            if (cartItems == null) return null;
+            if (cart == null)
+                return Result.Failure("Shopping cart not found for this customer.");
 
-            decimal totalAmount = 0;
+
+            decimal totalAmount = cart.Items.Sum(x => x.TotalPrice());
             decimal discountAmount = 0;
 
             var address = new AddressEntity(

@@ -12,10 +12,10 @@ namespace ECommerceApp.Domain.Entities
             Address = address;
             IsDefault = isDefault;
         }
-        public int Id { get; set; }
-        public int CustomerId { get; set; }
+
         public AddressEntity Address { get; }
         public bool IsDefault { get; private set; }
+
         public void SetAsDefault()
         {
             IsDefault = true;

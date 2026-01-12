@@ -22,13 +22,13 @@ namespace ECommerceApp.Infrastructure.Repository
             _productRepository = productRepository;
         }
 
-        public async Task Add(CartItemEntity cart)
+        public async Task Add(CartItemEntity ci)
         {
             var cartItem = new CartItem
             {
-                ProductId = cart.ProductId,
-                CartId = cart.CartId,
-                Quantity = cart.Quantity.Value
+                ProductId = ci.ProductId,
+                Price = ci.Price,
+                Quantity = ci.Quantity.Value
             };
             _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();
@@ -45,88 +45,30 @@ namespace ECommerceApp.Infrastructure.Repository
             }
         }
 
-        public async Task CreateCart(CartEntity cart)
+        public async Task CreateCart(int customerId)
         {
-            var c = new Cart
+            var cart = new Cart
             {
-                CustomerId = cart.CustomerId,
-                Items = cart.Items.Select(x => new CartItem
-                {
-                    ProductId = x.ProductId,
-                    CartId = x.CartId,
-                    Quantity = x.Quantity.Value
-                }).ToList()
+                CustomerId = customerId,
             };
 
-            _context.Carts.Add(c);
+            _context.Carts.Add(cart);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<CartItemEntity>> GetAll(int customerId)
-        {
-            var cartItems = await _context.CartItems
-                .Where(x => x.Cart.CustomerId == customerId)
-                .ToListAsync();
-
-            var result = new List<CartItemEntity>();
-
-            foreach (var item in cartItems)
-            {
-                var product = await _productRepository.GetById(item.ProductId);
-
-                if (product == null)
-                    continue;
-
-                var quantity = new Quantity(item.Quantity);
-
-                var entity = new CartItemEntity(
-                    item.ProductId,
-                    item.CartId,
-                    quantity,
-                    product
-                )
-                {
-                    Id = item.Id
-                };
-
-                result.Add(entity);
-            }
-
-            return result;
-        }
-
-
-        public async Task<CartItemEntity?> GetById(int id)
-        {
-            return await _context.CartItems
-                .Include(x => x.Product)
-                .Select(x => new CartItemEntity( 
-                    x.ProductId, 
-                    x.CartId,
-                    new Quantity(x.Quantity),
-                    new ProductEntity(x.Product.Name, x.Product.Price, new Quantity(x.Product.Quantity)) { Id = x.Product.Id })
-                    { Id = x.Id }
-                )
-                .SingleOrDefaultAsync(x => x.Id == id);  
         }
 
         public async Task<CartEntity?> GetCartById(int customerId)
         {
             return await _context.Carts
-                .Select(x => new CartEntity(
-                    x.CustomerId
-                )
+                .Where(x => x.CustomerId == customerId)
+                .Select(x => new CartEntity(customerId)
                 {
-                    Id = x.Id,
                     Items = x.Items.Select(ci => new CartItemEntity(
                         ci.ProductId,
-                        ci.CartId,
-                        new Quantity(ci.Quantity),
-                        new ProductEntity(ci.Product.Name, ci.Product.Price, new Quantity(ci.Product.Quantity)) { Id = ci.Product.Id })
-                    { Id = ci.Id }
+                        ci.Price,
+                        Quantity.FromInt(ci.Quantity)) 
                     ).ToList()
                 })
-                .SingleOrDefaultAsync (x => x.CustomerId == customerId);
+                .SingleOrDefaultAsync();
         }
     }
 }

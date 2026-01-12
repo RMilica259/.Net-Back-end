@@ -27,14 +27,13 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
 
             if (product == null) return Result.Failure("Product not found");
 
-            var quantity = new Quantity(request.Quantity);
+            var quantity = Quantity.FromInt(request.Quantity);
 
             var cartItem = new CartItemEntity
             (
                request.ProductId,
-               request.CartId,
-               quantity,
-               product
+               product.Price,
+               quantity
             );
 
             await _shoppingCartRepository.Add(cartItem);

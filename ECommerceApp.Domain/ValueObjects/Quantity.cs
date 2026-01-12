@@ -10,7 +10,7 @@ namespace ECommerceApp.Domain.ValueObjects
     {
         public int Value { get; }
 
-        public Quantity(int value)
+        private Quantity(int value)
         {
             if (value <= 0)
             {

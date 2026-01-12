@@ -11,7 +11,7 @@
                 DiscountAmount = discountAmount;
                 OrderDate = orderDate;
         }
-        public int Id { get; set; }
+
         public int CustomerId { get; }
         public AddressEntity ShippingAddress { get; } 
         public string PhoneNumber { get; } 

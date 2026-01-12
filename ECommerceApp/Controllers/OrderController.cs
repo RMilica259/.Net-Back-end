@@ -20,7 +20,7 @@ namespace ECommerceApp.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
         {
             var result = await _mediator.Send(request);
 

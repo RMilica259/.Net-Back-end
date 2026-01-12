@@ -4,17 +4,16 @@ namespace ECommerceApp.Domain.Entities
 {
     public class CartItemEntity
     {
-        public CartItemEntity(int productId, int cartId, Quantity quantity, ProductEntity product) {
+        public CartItemEntity(int productId, decimal price, Quantity quantity) {
             ProductId = productId;
-            CartId = cartId;
+            Price = price;
             Quantity = quantity;
-            Product = product;
         }
-        public int Id { get; set; }
+
         public int ProductId { get; }
-        public int CartId { get; }
-        public CartEntity CartEntity { get; }
+        public decimal Price { get; }
         public Quantity Quantity { get; }
-        public ProductEntity? Product { get; }
+
+        public decimal TotalPrice() => Price * Quantity.Value;
     }
 }

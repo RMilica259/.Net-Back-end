@@ -28,8 +28,7 @@ namespace ECommerceApp.Infrastructure.Repository
         {
             return await _appDbContext.Customers
                 .Where(x => x.Id == id)
-                .Select(x => new CustomerEntity($"{x.FirstName} {x.LastName}", x.Email)
-                { Id = x.Id})
+                .Select(x => new CustomerEntity($"{x.FirstName} {x.LastName}", x.Email))
                 .SingleOrDefaultAsync();
         }
 
@@ -45,10 +44,7 @@ namespace ECommerceApp.Infrastructure.Repository
 
             var entity = new CustomerEntity(
                 $"{customer.FirstName} {customer.LastName}",
-                customer.Email)
-            {
-                Id = customer.Id
-            };
+                customer.Email);
 
             foreach (var ca in customer.Addresses)
             {
