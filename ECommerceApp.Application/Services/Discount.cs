@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceApp.Domain.Services
+namespace ECommerceApp.Application.Services
 {
     public class Discount
     {

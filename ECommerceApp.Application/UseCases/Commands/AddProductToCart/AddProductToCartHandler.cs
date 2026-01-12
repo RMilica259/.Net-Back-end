@@ -1,6 +1,8 @@
 ﻿using ECommerceApp.Application.IRepository;
 using ECommerceApp.Domain.Entities;
+using ECommerceApp.Application.IServices;
 using ECommerceApp.Domain.OperationResult;
+using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.ValueObjects;
 using MediatR;
 using System;
@@ -15,10 +17,12 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IProductRepository _productRepository;
-        public AddProductToCartHandler(IShoppingCartRepository shoppingCartRepository, IProductRepository productRepository)
+        private readonly StockAvailability _stockAvailability;
+        public AddProductToCartHandler(IShoppingCartRepository shoppingCartRepository, IProductRepository productRepository, StockAvailability stockAvailability)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _productRepository = productRepository;
+            _stockAvailability = stockAvailability;
         }
 
         public async Task<Result> Handle(AddProductToCartRequest request, CancellationToken cancellationToken)
@@ -26,6 +30,10 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
             var product = await _productRepository.GetById(request.ProductId);
 
             if (product == null) return Result.Failure("Product not found");
+
+            var isAvailable = await _stockAvailability.IsQuantityAvailable(product.Quantity.Value, request.ProductId, request.Quantity);
+
+            if (!isAvailable) return Result.Failure("Not enough stock available");
 
             var quantity = Quantity.FromInt(request.Quantity);
 

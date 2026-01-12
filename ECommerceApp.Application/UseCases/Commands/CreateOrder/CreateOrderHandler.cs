@@ -3,7 +3,7 @@ using ECommerceApp.Domain.Date;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Errors;
 using ECommerceApp.Domain.OperationResult;
-using ECommerceApp.Domain.Services;
+using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.ValueObjects;
 using MediatR;
 using System;
