@@ -3,6 +3,7 @@ using ECommerceApp.Domain.Date;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Errors;
 using ECommerceApp.Domain.OperationResult;
+using ECommerceApp.Domain.Services;
 using ECommerceApp.Domain.ValueObjects;
 using MediatR;
 using System;
@@ -19,13 +20,15 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly Discount _discount;
 
-        public CreateOrderHandler(IShoppingCartRepository shoppingCartRepository, IOrderRepository orderRepository, IProductRepository productRepository, IDateTimeProvider dateTimeProvider)
+        public CreateOrderHandler(IShoppingCartRepository shoppingCartRepository, IOrderRepository orderRepository, IProductRepository productRepository, IDateTimeProvider dateTimeProvider, Discount discount)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _orderRepository = orderRepository;
             _productRepository = productRepository;
             _dateTimeProvider = dateTimeProvider;
+            _discount = discount;
         }
 
         public async Task<Result> Handle(CreateOrderRequest request, CancellationToken cancellationToken)
@@ -37,7 +40,8 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
 
 
             decimal totalAmount = cart.Items.Sum(x => x.TotalPrice());
-            decimal discountAmount = 0;
+
+            var discountAmount = _discount.Calculate(totalAmount, request.PhoneNumber, _dateTimeProvider.UtcNow());
 
             var address = new AddressEntity(
                 request.ShippingAddress.City,

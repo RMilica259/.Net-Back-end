@@ -2,6 +2,7 @@ using ECommerceApp.Application.IRepository;
 using ECommerceApp.Application.UseCases.Commands.CreateOrder;
 using ECommerceApp.Application.UseCases.Queries.GetCartItem;
 using ECommerceApp.Domain.Date;
+using ECommerceApp.Domain.Services;
 using ECommerceApp.Infrastructure;
 using ECommerceApp.Infrastructure.Data;
 using ECommerceApp.Infrastructure.Queries;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 builder.Services.AddScoped<IGetCartQuery, GetCartQuery>();
 
+builder.Services.AddScoped<Discount>();
 
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateOrderRequest).Assembly));
