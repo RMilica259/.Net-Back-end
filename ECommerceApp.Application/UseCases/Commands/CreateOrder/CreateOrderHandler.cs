@@ -18,15 +18,13 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IOrderRepository _orderRepository;
-        private readonly IProductRepository _productRepository;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly Discount _discount;
 
-        public CreateOrderHandler(IShoppingCartRepository shoppingCartRepository, IOrderRepository orderRepository, IProductRepository productRepository, IDateTimeProvider dateTimeProvider, Discount discount)
+        public CreateOrderHandler(IShoppingCartRepository shoppingCartRepository, IOrderRepository orderRepository, IDateTimeProvider dateTimeProvider, Discount discount)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _orderRepository = orderRepository;
-            _productRepository = productRepository;
             _dateTimeProvider = dateTimeProvider;
             _discount = discount;
         }
