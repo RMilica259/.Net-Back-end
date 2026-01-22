@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OrderManager.Web;
+using ECommerceApp.Web;
 
-namespace OrderManager.IntegrationTests.AutoFixture
+namespace ECommerceApp.IntegrationTests.AutoFixture
 {
     public delegate TestIntegrationHost IntegrationTestHostBuilder(
         Action<IServiceCollection> serviceCollectionModifier = null,

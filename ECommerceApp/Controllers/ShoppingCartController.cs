@@ -37,6 +37,9 @@ namespace ECommerceApp.Web.Controllers
 
             var result = await _mediator.Send(request);
 
+            if (result == null)
+                return NotFound();
+
             return Ok(result);
         }
 
