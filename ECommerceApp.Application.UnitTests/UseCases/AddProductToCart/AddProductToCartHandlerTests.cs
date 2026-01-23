@@ -21,7 +21,6 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
         public async Task Handle_ValidRequest_AddProductToCart(
             [Frozen] Mock<IProductRepository> productRepositoryMock,
             [Frozen] Mock<IShoppingCartRepository> shoppingCartRepositoryMock,
-            [Frozen] Mock<StockAvailability> stockAvailabilityMock,
             ProductEntity product,
             AddProductToCartRequest request,
             AddProductToCartHandler sut
@@ -31,22 +30,16 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
                 .Setup(x => x.GetById(request.ProductId))
                 .ReturnsAsync(product);
 
-            stockAvailabilityMock
-                .Setup(x => x.IsQuantityAvailable(
-                    product.Quantity.Value,
-                    request.ProductId,
-                    request.Quantity))
-                .ReturnsAsync(true);
-
             var result = await sut.Handle(request, default);
 
             result.IsSuccessful.Should().BeTrue();
 
             shoppingCartRepositoryMock.Verify(
-                x => x.Add(It.Is<CartItemEntity>(item =>
-                    item.ProductId == request.ProductId &&
-                    item.Quantity.Value == request.Quantity)), 
-                Times.Once());
+                x => x.Save(It.Is<CartEntity>(c =>
+                    c.Items.Any(i =>
+                        i.ProductId == request.ProductId &&
+                        i.Quantity.Value == request.Quantity))),
+                Times.Once);
         }
 
         [Theory]
@@ -66,7 +59,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
 
             result.IsSuccessful.Should().BeFalse();
 
-            shoppingCartRepositoryMock.Verify(x => x.Add(It.IsAny<CartItemEntity>()), Times.Never());
+            shoppingCartRepositoryMock.Verify(x => x.Save(It.IsAny<CartEntity>()), Times.Never);
         }
 
         [Theory]
@@ -74,7 +67,6 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
         public async Task Handle_NotEnoughStock_ReturnsFailure(
             [Frozen] Mock<IProductRepository> productRepositoryMock,
             [Frozen] Mock<IShoppingCartRepository> shoppingCartRepositoryMock,
-            [Frozen] Mock<StockAvailability> stockAvailabilityMock,
             ProductEntity product,
             AddProductToCartRequest request,
             AddProductToCartHandler sut
@@ -84,18 +76,11 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
                 .Setup(x => x.GetById(request.ProductId))
                 .ReturnsAsync(product);
 
-            stockAvailabilityMock
-                .Setup(x => x.IsQuantityAvailable(
-                    product.Quantity.Value,
-                    request.ProductId,
-                    request.Quantity))
-                .ReturnsAsync(false);
-
             var result = await sut.Handle(request, default);
 
             result.IsSuccessful.Should().BeFalse();
 
-            shoppingCartRepositoryMock.Verify(x => x.Add(It.IsAny<CartItemEntity>()), Times.Never());
+            shoppingCartRepositoryMock.Verify(x => x.Save(It.IsAny<CartEntity>()), Times.Never);
         }
     }
 }
