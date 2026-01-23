@@ -37,7 +37,7 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
                 return Result.Failure("Shopping cart not found for this customer.");
 
 
-            decimal totalAmount = cart.Items.Sum(x => x.TotalPrice());
+            decimal totalAmount = cart.Total();
 
             var discountAmount = _discount.Calculate(totalAmount, request.PhoneNumber, _dateTimeProvider.UtcNow());
 
