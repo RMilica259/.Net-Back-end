@@ -59,7 +59,7 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
 
             await _orderRepository.Create(order);
 
-            await _shoppingCartRepository.Clear(request.CustomerId);
+            await _shoppingCartRepository.Delete(request.CustomerId);
 
             return Result.Success();
         }

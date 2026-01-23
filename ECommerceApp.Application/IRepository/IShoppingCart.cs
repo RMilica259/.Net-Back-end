@@ -12,7 +12,7 @@ namespace ECommerceApp.Application.IRepository
         Task<CartEntity?> GetCartById(int customerId);
         Task CreateCart(int customerId);
         Task Add(CartItemEntity cartItem);
-        Task Clear(int customerId);
+        Task Delete(int customerId);
         Task Save(CartEntity cart);
     }
 }

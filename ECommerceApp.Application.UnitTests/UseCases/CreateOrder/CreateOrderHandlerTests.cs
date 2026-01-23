@@ -44,7 +44,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
                 order.TotalAmount == cart.Items.Sum(i => i.TotalPrice()) &&
                 order.OrderDate == now)), Times.Once());
 
-            shoppingCartRepositoryMock.Verify(x => x.Clear(request.CustomerId), Times.Once());
+            shoppingCartRepositoryMock.Verify(x => x.Delete(request.CustomerId), Times.Once());
         }
 
         [Theory]

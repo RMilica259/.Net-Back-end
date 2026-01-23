@@ -34,7 +34,7 @@ namespace ECommerceApp.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task Clear(int customerId)
+        public async Task Delete(int customerId)
         {
             var cartItems = await _context.CartItems.Where(x => x.Cart.CustomerId == customerId).ToListAsync();
 
