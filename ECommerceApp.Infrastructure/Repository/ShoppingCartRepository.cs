@@ -66,9 +66,35 @@ namespace ECommerceApp.Infrastructure.Repository
                         ci.ProductId,
                         ci.Price,
                         Quantity.FromInt(ci.Quantity)) 
-                    ).ToList()
+                    ).ToHashSet()
                 })
                 .SingleOrDefaultAsync();
         }
+
+        public async Task Save(CartEntity cart)
+        {
+            var dbCart = await _context.Carts
+                .Include(c => c.Items)
+                .SingleAsync(c => c.CustomerId == cart.CustomerId);
+
+            cart.Items.ToList().ForEach(item =>
+            {
+                var existing = dbCart.Items.SingleOrDefault(i => i.ProductId == item.ProductId);
+
+                if (existing is null)
+                {
+                    dbCart.Items.Add(new CartItem
+                    {
+                        ProductId = item.ProductId,
+                        Price = item.Price,
+                        Quantity = item.Quantity.Value
+                    });
+                }
+                else existing.Quantity = item.Quantity.Value;
+            });
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

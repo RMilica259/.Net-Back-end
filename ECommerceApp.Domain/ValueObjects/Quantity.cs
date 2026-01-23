@@ -20,5 +20,7 @@ namespace ECommerceApp.Domain.ValueObjects
         }
 
         public static Quantity FromInt(int value) => new Quantity(value);
+
+        public Quantity Add(Quantity q) => new Quantity(Value + q.Value);
     }
 }

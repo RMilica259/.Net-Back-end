@@ -15,14 +15,24 @@ namespace ECommerceApp.Domain.Entities
         }
 
         public int CustomerId { get; }
-        public List<CartItemEntity> Items = new ();
+        public HashSet<CartItemEntity> Items = new ();
 
         public IReadOnlyCollection<CartItemEntity> items => Items;
 
-        public void AddItem(CartItemEntity cart)
+        public void AddOrUpdateItem(CartItemEntity newItem)
         {
-            Items.Add(cart);
+            var existingItem = Items.FirstOrDefault(i => i.ProductId == newItem.ProductId);
+
+            if (existingItem is not null)
+            {
+                existingItem.IncreaseQuantity(newItem.Quantity);
+            }
+            else
+            {
+                Items.Add(newItem);
+            }
         }
+
 
         public decimal Total() => Items.Sum(i => i.TotalPrice());
     }

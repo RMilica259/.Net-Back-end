@@ -37,14 +37,22 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
 
             var quantity = Quantity.FromInt(request.Quantity);
 
-            var cartItem = new CartItemEntity
-            (
-               request.ProductId,
-               product.Price,
-               quantity
-            );
+            var cart = await _shoppingCartRepository.GetCartById(request.CustomerId);
 
-            await _shoppingCartRepository.Add(cartItem);
+            if(cart == null)
+            {
+                await _shoppingCartRepository.CreateCart(request.CustomerId);
+                cart = await _shoppingCartRepository.GetCartById(request.CustomerId);
+            }
+
+            cart.AddOrUpdateItem(
+                new CartItemEntity(
+                    request.ProductId,
+                    product.Price,
+                    quantity)
+                );
+
+            await _shoppingCartRepository.Save(cart);
 
             return Result.Success();
         }
