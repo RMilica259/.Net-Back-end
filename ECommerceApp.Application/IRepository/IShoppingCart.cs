@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECommerceApp.Domain.Entities;
+﻿using ECommerceApp.Domain.Entities;
 
 namespace ECommerceApp.Application.IRepository
 {

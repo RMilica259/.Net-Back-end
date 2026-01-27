@@ -1,10 +1,4 @@
-﻿using ECommerceApp.Domain.OperationResult;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {

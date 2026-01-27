@@ -1,16 +1,7 @@
 ﻿using ECommerceApp.Application.UseCases.Queries.GetCartItem;
-using ECommerceApp.Domain.Entities;
-using ECommerceApp.Infrastructure.Data;
-using ECommerceApp.Infrastructure.Models;
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
 using ECommerceApp.IntegrationTests.AutoFixture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace ECommerceApp.IntegrationTests.UseCases

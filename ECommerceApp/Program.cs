@@ -1,15 +1,4 @@
-using ECommerceApp.Application.IRepository;
-using ECommerceApp.Application.IServices;
-using ECommerceApp.Application.Services;
-using ECommerceApp.Application.UseCases.Commands.CreateOrder;
-using ECommerceApp.Application.UseCases.Queries.GetCartItem;
-using ECommerceApp.Domain.Date;
-using ECommerceApp.Infrastructure;
-using ECommerceApp.Infrastructure.Data;
-using ECommerceApp.Infrastructure.Queries;
-using ECommerceApp.Infrastructure.Repository;
 using ECommerceApp.Web.Extensions;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

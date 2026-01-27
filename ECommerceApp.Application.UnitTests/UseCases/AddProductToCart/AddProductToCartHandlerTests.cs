@@ -1,16 +1,9 @@
 ﻿using AutoFixture.Xunit2;
 using ECommerceApp.Application.IRepository;
-using ECommerceApp.Application.IServices;
-using ECommerceApp.Application.Services;
 using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
 using ECommerceApp.Domain.Entities;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
 {

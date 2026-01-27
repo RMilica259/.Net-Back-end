@@ -1,12 +1,4 @@
-﻿using ECommerceApp.Domain.Entities;
-using ECommerceApp.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
+﻿namespace ECommerceApp.Application.UseCases.Queries.GetCartItem
 {
     public class CartItemDto
     {

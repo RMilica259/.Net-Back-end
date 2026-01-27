@@ -1,11 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECommerceApp.Domain.Errors;
+﻿using ECommerceApp.Domain.Errors;
 
 namespace ECommerceApp.Domain.OperationResult
 {

@@ -5,11 +5,6 @@ using ECommerceApp.Domain.Date;
 using ECommerceApp.Domain.Entities;
 using Moq;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
 {

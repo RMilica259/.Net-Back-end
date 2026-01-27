@@ -1,9 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ECommerceApp.Infrastructure.Models;
-using ECommerceApp.Infrastructure.Data;
-using Microsoft.AspNetCore.Mvc;
-using ECommerceApp.Application.IRepository;
-using ECommerceApp.Domain.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using ECommerceApp.Application.UseCases.Commands.CreateOrder;
 

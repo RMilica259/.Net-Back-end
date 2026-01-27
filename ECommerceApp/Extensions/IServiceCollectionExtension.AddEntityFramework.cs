@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Web.Extensions
 {
-    public static partial class IApplicationBuilderExtension
+    public static partial class IServiceCollectionExtension
     {
         public static void AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
         {

@@ -1,16 +1,9 @@
 ﻿using ECommerceApp.Application.IRepository;
 using ECommerceApp.Domain.Date;
 using ECommerceApp.Domain.Entities;
-using ECommerceApp.Domain.Errors;
 using ECommerceApp.Domain.OperationResult;
 using ECommerceApp.Application.Services;
-using ECommerceApp.Domain.ValueObjects;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
 {
