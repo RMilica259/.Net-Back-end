@@ -16,7 +16,7 @@ namespace ECommerceApp.Domain.Entities
 
         public decimal TotalPrice() => Price * Quantity.Value;
 
-        internal void IncreaseQuantity(Quantity quantity)
+        public void IncreaseQuantity(Quantity quantity)
         {
             Quantity = Quantity.Add(quantity);
         }

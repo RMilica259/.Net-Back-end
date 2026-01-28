@@ -40,7 +40,7 @@ namespace ECommerceApp.Infrastructure.Repository
             }
         }
 
-        public async Task CreateCart(int customerId)
+        public async Task<CartEntity> CreateCart(int customerId)
         {
             var cart = new Cart
             {
@@ -49,6 +49,8 @@ namespace ECommerceApp.Infrastructure.Repository
 
             _context.Carts.Add(cart);
             await _context.SaveChangesAsync();
+
+            return new CartEntity(customerId);
         }
 
         public async Task<CartEntity?> GetCartById(int customerId)

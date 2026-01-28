@@ -1,7 +1,8 @@
 ﻿using ECommerceApp.Application.IRepository;
-using ECommerceApp.Domain.Entities;
-using ECommerceApp.Domain.OperationResult;
 using ECommerceApp.Application.Services;
+using ECommerceApp.Domain.Entities;
+using ECommerceApp.Domain.Errors;
+using ECommerceApp.Domain.OperationResult;
 using ECommerceApp.Domain.ValueObjects;
 using MediatR;
 
@@ -22,32 +23,37 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
         public async Task<Result> Handle(AddProductToCartRequest request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetById(request.ProductId);
+            if (product == null) 
+                return Result.Failure("Product not found");
 
-            if (product == null) return Result.Failure("Product not found");
+            var cart = await _shoppingCartRepository.GetCartById(request.CustomerId)
+               ?? await _shoppingCartRepository.CreateCart(request.CustomerId);
 
-            var isAvailable = await _stockAvailability.IsQuantityAvailable(product.Quantity.Value, request.ProductId, request.Quantity);
+            var existingItem = cart.items.FirstOrDefault(i => i.ProductId == request.ProductId);
 
-            if (!isAvailable) return Result.Failure("Not enough stock available");
+            int totalQuantity;
 
-            var quantity = Quantity.FromInt(request.Quantity);
+            if (existingItem == null) totalQuantity = request.Quantity;
+            else totalQuantity = existingItem.Quantity.Value + request.Quantity;
 
-            var cart = await _shoppingCartRepository.GetCartById(request.CustomerId);
+            if (!await _stockAvailability.IsQuantityAvailable(product.Quantity.Value, request.ProductId, totalQuantity))
+                return Result.Failure("Not enough stock available");
 
-            if(cart == null)
+            var cartItem = new CartItemEntity(request.ProductId, product.Price, Quantity.FromInt(request.Quantity));
+
+            var result = cart.AddItem(cartItem);
+
+            if (!result.IsSuccessful)
             {
-                await _shoppingCartRepository.CreateCart(request.CustomerId);
-                cart = await _shoppingCartRepository.GetCartById(request.CustomerId);
+                if (result.Error != DomainErrors.Cart.ItemAlreadyExists())
+                    return result;
+
+                result = cart.UpdateItemQuantity(cartItem);
+                if (!result.IsSuccessful)
+                    return result;
             }
 
-            cart.AddOrUpdateItem(
-                new CartItemEntity(
-                    request.ProductId,
-                    product.Price,
-                    quantity)
-                );
-
             await _shoppingCartRepository.Save(cart);
-
             return Result.Success();
         }
     }

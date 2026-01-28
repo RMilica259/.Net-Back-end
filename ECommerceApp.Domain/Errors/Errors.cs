@@ -1,10 +1,11 @@
 ﻿namespace ECommerceApp.Domain.Errors
 {
-    public class Errors
+    public class DomainErrors
     {
         public static class Cart
         {
             public static Error ItemAlreadyExists() => new("CARTT001", "The item already exists in the cart.");
+            public static Error ItemNotFound() => new("CART004", "The item was not found in the cart.");
             public static Error InsuficientStock() => new("CARTT002", "Insufficient stock for the requested item.");
             public static Error CartIsEmpty() => new("CARTT003", "The cart is empty.");
         }
