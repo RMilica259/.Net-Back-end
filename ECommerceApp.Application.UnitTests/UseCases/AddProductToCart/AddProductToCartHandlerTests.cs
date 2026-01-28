@@ -28,7 +28,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
             result.IsSuccessful.Should().BeTrue();
 
             shoppingCartRepositoryMock.Verify(
-                x => x.Save(It.Is<CartEntity>(c =>
+                x => x.Update(It.Is<CartEntity>(c =>
                     c.Items.Any(i =>
                         i.ProductId == request.ProductId &&
                         i.Quantity.Value == request.Quantity))),
@@ -52,7 +52,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
 
             result.IsSuccessful.Should().BeFalse();
 
-            shoppingCartRepositoryMock.Verify(x => x.Save(It.IsAny<CartEntity>()), Times.Never);
+            shoppingCartRepositoryMock.Verify(x => x.Update(It.IsAny<CartEntity>()), Times.Never);
         }
 
         [Theory]
@@ -73,7 +73,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
 
             result.IsSuccessful.Should().BeFalse();
 
-            shoppingCartRepositoryMock.Verify(x => x.Save(It.IsAny<CartEntity>()), Times.Never);
+            shoppingCartRepositoryMock.Verify(x => x.Update(It.IsAny<CartEntity>()), Times.Never);
         }
     }
 }

@@ -40,20 +40,20 @@ namespace ECommerceApp.Infrastructure.Repository
             }
         }
 
-        public async Task<CartEntity> CreateCart(int customerId)
+        public async Task<CartEntity> Create(CartEntity cartEntity)
         {
             var cart = new Cart
             {
-                CustomerId = customerId,
+                CustomerId = cartEntity.CustomerId
             };
 
             _context.Carts.Add(cart);
             await _context.SaveChangesAsync();
 
-            return new CartEntity(customerId);
+            return cartEntity;
         }
 
-        public async Task<CartEntity?> GetCartById(int customerId)
+        public async Task<CartEntity?> GetById(int customerId)
         {
             return await _context.Carts
                 .Where(x => x.CustomerId == customerId)
@@ -68,7 +68,7 @@ namespace ECommerceApp.Infrastructure.Repository
                 .SingleOrDefaultAsync();
         }
 
-        public async Task Save(CartEntity cart)
+        public async Task Update(CartEntity cart)
         {
             var dbCart = await _context.Carts
                 .Include(c => c.Items)

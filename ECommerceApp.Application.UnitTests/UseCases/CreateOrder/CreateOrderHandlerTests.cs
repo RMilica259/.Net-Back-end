@@ -23,7 +23,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
             )
         {
             shoppingCartRepositoryMock
-                .Setup(x => x.GetCartById(request.CustomerId))
+                .Setup(x => x.GetById(request.CustomerId))
                 .ReturnsAsync(cart);
 
             dateTimeProviderMock
@@ -52,7 +52,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
             )
         {
             shoppingCartRepositoryMock
-                .Setup(x => x.GetCartById(request.CustomerId))
+                .Setup(x => x.GetById(request.CustomerId))
                 .ReturnsAsync((CartEntity?)null);
 
             var result = await sut.Handle(request, default);

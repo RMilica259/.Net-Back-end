@@ -24,7 +24,7 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
 
         public async Task<Result> Handle(CreateOrderRequest request, CancellationToken cancellationToken)
         {
-            var cart = await _shoppingCartRepository.GetCartById(request.CustomerId);
+            var cart = await _shoppingCartRepository.GetById(request.CustomerId);
 
             if (cart == null)
                 return Result.Failure("Shopping cart not found for this customer.");

@@ -26,8 +26,13 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
             if (product == null) 
                 return Result.Failure("Product not found");
 
-            var cart = await _shoppingCartRepository.GetCartById(request.CustomerId)
-               ?? await _shoppingCartRepository.CreateCart(request.CustomerId);
+            var cart = await _shoppingCartRepository.GetById(request.CustomerId);
+
+            if (cart == null)
+            {
+                cart = new CartEntity(request.CustomerId);
+                cart = await _shoppingCartRepository.Create(cart);
+            }
 
             var existingItem = cart.items.FirstOrDefault(i => i.ProductId == request.ProductId);
 
@@ -53,7 +58,7 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
                     return result;
             }
 
-            await _shoppingCartRepository.Save(cart);
+            await _shoppingCartRepository.Update(cart);
             return Result.Success();
         }
     }
