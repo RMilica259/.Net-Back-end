@@ -1,6 +1,5 @@
 ﻿using AutoFixture.Xunit2;
 using ECommerceApp.Application.IRepository;
-using ECommerceApp.Application.Services;
 using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
 using ECommerceApp.Domain.Entities;
 using FluentAssertions;
@@ -70,10 +69,15 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
                 .Setup(x => x.GetById(request.ProductId))
                 .ReturnsAsync(product);
 
+            shoppingCartRepositoryMock
+                .Setup(x => x.GetById(request.CustomerId))
+                .ReturnsAsync(new CartEntity(request.CustomerId));
+
             var result = await sut.Handle(request, default);
 
             result.IsSuccessful.Should().BeFalse();
 
+            shoppingCartRepositoryMock.Verify(x => x.Create(It.IsAny<CartEntity>()), Times.Never);
             shoppingCartRepositoryMock.Verify(x => x.Update(It.IsAny<CartEntity>()), Times.Never);
         }
     }
