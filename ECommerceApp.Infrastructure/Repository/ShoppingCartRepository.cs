@@ -10,11 +10,9 @@ namespace ECommerceApp.Infrastructure.Repository
     public class ShoppingCartRepository : IShoppingCartRepository
     {
         private readonly AppDbContext _context;
-        private readonly IProductRepository _productRepository;
-        public ShoppingCartRepository(AppDbContext context, IProductRepository productRepository)
+        public ShoppingCartRepository(AppDbContext context)
         {
             _context = context;
-            _productRepository = productRepository;
         }
 
         public async Task Add(CartItemEntity ci)
@@ -50,6 +48,8 @@ namespace ECommerceApp.Infrastructure.Repository
             _context.Carts.Add(cart);
             await _context.SaveChangesAsync();
 
+            cartEntity.Id = cart.Id;
+
             return cartEntity;
         }
 
@@ -59,10 +59,14 @@ namespace ECommerceApp.Infrastructure.Repository
                 .Where(x => x.CustomerId == customerId)
                 .Select(x => new CartEntity(customerId)
                 {
+                    Id = x.Id,
                     Items = x.Items.Select(ci => new CartItemEntity(
                         ci.ProductId,
                         ci.Price,
-                        Quantity.FromInt(ci.Quantity)) 
+                        Quantity.FromInt(ci.Quantity))
+                    {
+                        Id = ci.Id
+                    }
                     ).ToHashSet()
                 })
                 .SingleOrDefaultAsync();
@@ -89,9 +93,7 @@ namespace ECommerceApp.Infrastructure.Repository
                 }
                 else existing.Quantity = item.Quantity.Value;
             });
-
             await _context.SaveChangesAsync();
         }
-
     }
 }

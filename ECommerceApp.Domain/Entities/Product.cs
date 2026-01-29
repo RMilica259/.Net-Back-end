@@ -11,6 +11,7 @@ namespace ECommerceApp.Domain.Entities
             Quantity = quantity;
         }
 
+        public int Id { get; set; }
         public string Name { get; } 
         public decimal Price { get; }
         public Quantity Quantity { get; }

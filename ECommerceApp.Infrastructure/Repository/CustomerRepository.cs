@@ -8,7 +8,6 @@ namespace ECommerceApp.Infrastructure.Repository
     public class CustomerRepository : ICustomerRepository
     {
         private readonly AppDbContext _appDbContext;
-
         public CustomerRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
@@ -23,37 +22,18 @@ namespace ECommerceApp.Infrastructure.Repository
         {
             return await _appDbContext.Customers
                 .Where(x => x.Id == id)
-                .Select(x => new CustomerEntity($"{x.FirstName} {x.LastName}", x.Email))
+                .Select(x => new CustomerEntity($"{x.FirstName} {x.LastName}", x.Email,
+                    x.Addresses.Select(c => new AddressEntity(
+                        c.Address.City,
+                        c.Address.Street,
+                        c.Address.HouseNumber,
+                        c.Address.ZipCode))
+                    .ToHashSet()
+                )
+                {
+                    Id = x.Id
+                })
                 .SingleOrDefaultAsync();
-        }
-
-        public async Task<CustomerEntity?> GetWithAddresses(int id)
-        {
-            var customer = await _appDbContext.Customers
-                .Include(c => c.Addresses)
-                    .ThenInclude(ca => ca.Address)
-                .SingleOrDefaultAsync(c => c.Id == id);
-
-            if (customer is null)
-                return null;
-
-            var entity = new CustomerEntity(
-                $"{customer.FirstName} {customer.LastName}",
-                customer.Email);
-
-            foreach (var ca in customer.Addresses)
-            {
-                entity.AddAddress(
-                    new AddressEntity(
-                        ca.Address.City,
-                        ca.Address.Street,
-                        ca.Address.HouseNumber,
-                        ca.Address.ZipCode
-                    )
-                );
-            }
-
-            return entity;
         }
     }
 }

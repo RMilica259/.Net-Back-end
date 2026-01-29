@@ -10,6 +10,7 @@
             ZipCode = zipCode;
         }
 
+        public int Id { get; set; }
         public string City { get; }
         public string Street { get; }
         public string HouseNumber { get; }

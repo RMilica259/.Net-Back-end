@@ -7,6 +7,7 @@
             IsDefault = isDefault;
         }
 
+        public int Id { get; set; }
         public AddressEntity Address { get; }
         public bool IsDefault { get; private set; }
 

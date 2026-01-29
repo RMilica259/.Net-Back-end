@@ -20,11 +20,15 @@ namespace ECommerceApp.Infrastructure.Repository
 
             if (product == null) return null;
 
-            return new ProductEntity(
+            var entity = new ProductEntity(
                product.Name,
                product.Price,
                Quantity.FromInt(product.Quantity)
             );
+
+            entity.Id = product.Id;
+
+            return entity;
         }
     }
 }

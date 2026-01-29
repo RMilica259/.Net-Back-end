@@ -2,16 +2,17 @@
 {
     public class CustomerEntity
     {
-        public CustomerEntity(string name, string email) 
+        public CustomerEntity(string name, string email, HashSet<AddressEntity> addresses) 
         {
             Name = name;
             Email = email;
-            Addresses = new List<AddressEntity>();
+            Addresses = addresses;
         }
 
+        public int Id { get; set; }
         public string Name { get; }
         public string Email { get; }
-        public List<AddressEntity> Addresses { get; }
+        public HashSet<AddressEntity> Addresses { get; }
 
         public void AddAddress(AddressEntity address)
         {

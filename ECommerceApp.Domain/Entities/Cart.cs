@@ -10,6 +10,7 @@ namespace ECommerceApp.Domain.Entities
             CustomerId = customerId;
         }
 
+        public int Id { get; set; }
         public int CustomerId { get; }
         public HashSet<CartItemEntity> Items = new ();
 

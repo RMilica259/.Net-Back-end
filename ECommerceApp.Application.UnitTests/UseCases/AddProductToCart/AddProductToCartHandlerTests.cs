@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using ECommerceApp.Application.IRepository;
+using ECommerceApp.Application.Services;
 using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
 using ECommerceApp.Domain.Entities;
 using FluentAssertions;

@@ -33,6 +33,8 @@ namespace ECommerceApp.Infrastructure.Repository
             };
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
+
+            orderEntity.Id = order.Id;
         }
     }
 }

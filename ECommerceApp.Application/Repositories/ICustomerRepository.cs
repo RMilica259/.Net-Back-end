@@ -6,6 +6,5 @@ namespace ECommerceApp.Application.IRepository
     {
         Task<bool> Exists (int id);
         Task<CustomerEntity?> GetById (int id);
-        Task<CustomerEntity?> GetWithAddresses(int id);
     }
 }
