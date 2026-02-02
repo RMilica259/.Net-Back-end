@@ -15,8 +15,10 @@ namespace ECommerceApp.Web.Extensions
 
             services.AddScoped<IGetCartQuery, GetCartQuery>();
 
-            services.AddScoped<StockAvailability>();
             services.AddScoped<IStockAvailability, StockAvailabilityMock>();
+
+            services.AddScoped<IStock, ExternalStock>();
+            services.Decorate<IStock, LocalFirstStockDecorator>();
 
             services.AddScoped<Discount>();
         }

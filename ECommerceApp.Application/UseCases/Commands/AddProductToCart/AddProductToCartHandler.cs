@@ -1,4 +1,5 @@
 ﻿using ECommerceApp.Application.IRepository;
+using ECommerceApp.Application.IServices;
 using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Errors;
@@ -12,8 +13,8 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IProductRepository _productRepository;
-        private readonly StockAvailability _stockAvailability;
-        public AddProductToCartHandler(IShoppingCartRepository shoppingCartRepository, IProductRepository productRepository, StockAvailability stockAvailability)
+        private readonly IStock _stockAvailability;
+        public AddProductToCartHandler(IShoppingCartRepository shoppingCartRepository, IProductRepository productRepository, IStock stockAvailability)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _productRepository = productRepository;

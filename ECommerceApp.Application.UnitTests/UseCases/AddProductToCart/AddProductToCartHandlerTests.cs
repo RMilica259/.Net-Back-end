@@ -1,5 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using ECommerceApp.Application.IRepository;
+using ECommerceApp.Application.IServices;
+using ECommerceApp.Application.Services;
 using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
 using ECommerceApp.Domain.Entities;
 using FluentAssertions;
@@ -60,6 +62,7 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
         public async Task Handle_NotEnoughStock_ReturnsFailure(
             [Frozen] Mock<IProductRepository> productRepositoryMock,
             [Frozen] Mock<IShoppingCartRepository> shoppingCartRepositoryMock,
+            [Frozen] Mock<IStock> stockAvailabilityMock,
             ProductEntity product,
             AddProductToCartRequest request,
             AddProductToCartHandler sut
@@ -72,6 +75,10 @@ namespace ECommerceApp.Application.UnitTests.UseCases.AddProductToCart
             shoppingCartRepositoryMock
                 .Setup(x => x.GetById(request.CustomerId))
                 .ReturnsAsync(new CartEntity(request.CustomerId));
+
+            stockAvailabilityMock
+                .Setup(x => x.IsQuantityAvailable(product.Quantity.Value, request.ProductId, request.Quantity))
+                .ReturnsAsync(false);
 
             var result = await sut.Handle(request, default);
 
