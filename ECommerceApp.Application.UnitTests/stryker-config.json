@@ -1,0 +1,11 @@
+{
+	"stryker-config": {
+		"project": "ECommerceApp.Application.csproj",
+		"reporters": [
+			"progress",
+			"html",
+			"cleartext"
+		],
+		"mutation-level": "standard"
+	}
+}

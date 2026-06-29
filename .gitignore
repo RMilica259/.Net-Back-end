@@ -7,4 +7,5 @@ obj/
 *.log
 *.vsidx
 .vscode/
+**/StrykerOutput/
 
