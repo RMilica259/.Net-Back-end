@@ -12,24 +12,24 @@ namespace ECommerceApp.Domain.Entities
 
         public int Id { get; set; }
         public int CustomerId { get; }
-        public HashSet<CartItemEntity> Items = new ();
+        private readonly HashSet<CartItemEntity> items = new();
 
-        public IReadOnlyCollection<CartItemEntity> items => Items;
+        public IReadOnlyCollection<CartItemEntity> Items => items;
 
         public Result AddItem(CartItemEntity item)
         {
-            if (Items.Any(i => i.ProductId == item.ProductId))
+            if (items.Any(i => i.ProductId == item.ProductId))
                 return Result.Failure(DomainErrors.Cart.ItemAlreadyExists());
 
-            Items.Add(item);
+            items.Add(item);
             return Result.Success();
         }
 
         public Result UpdateItemQuantity(CartItemEntity cartItem)
         {
-            var item = Items.FirstOrDefault(i => i.ProductId == cartItem.ProductId);
+            var item = items.FirstOrDefault(i => i.ProductId == cartItem.ProductId);
 
-            if(item is null)
+            if (item is null)
             {
                 return Result.Failure(DomainErrors.Cart.ItemNotFound());
             }
@@ -38,6 +38,6 @@ namespace ECommerceApp.Domain.Entities
             return Result.Success();
         }
 
-        public decimal Total() => Items.Sum(i => i.TotalPrice());
+        public decimal Total() => items.Sum(i => i.TotalPrice());
     }
 }

@@ -10,6 +10,7 @@
             {
                 throw new ArgumentException("Quantity must be greater than zero.", nameof(value));
             }
+
             Value = value;
         }
 

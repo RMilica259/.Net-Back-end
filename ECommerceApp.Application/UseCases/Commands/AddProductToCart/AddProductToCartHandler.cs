@@ -1,6 +1,5 @@
 ﻿using ECommerceApp.Application.IRepository;
 using ECommerceApp.Application.IServices;
-using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Errors;
 using ECommerceApp.Domain.OperationResult;
@@ -24,7 +23,7 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
         public async Task<Result> Handle(AddProductToCartRequest request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetById(request.ProductId);
-            if (product == null) 
+            if (product == null)
                 return Result.Failure("Product not found");
 
             var cart = await _shoppingCartRepository.GetById(request.CustomerId);
@@ -35,7 +34,7 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
                 cart = await _shoppingCartRepository.Create(cart);
             }
 
-            var existingItem = cart.items.FirstOrDefault(i => i.ProductId == request.ProductId);
+            var existingItem = cart.Items.FirstOrDefault(i => i.ProductId == request.ProductId);
 
             int totalQuantity;
 

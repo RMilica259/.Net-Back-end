@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MediatR;
+﻿using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
 using ECommerceApp.Application.UseCases.Queries.GetCartItem;
-using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Web.Controllers
 {
@@ -17,7 +17,7 @@ namespace ECommerceApp.Web.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddToCart(AddProductToCartRequest request)
-        { 
+        {
             var result = await _mediator.Send(request);
 
             if (!result.IsSuccessful) return BadRequest(result.Message);
@@ -37,6 +37,5 @@ namespace ECommerceApp.Web.Controllers
 
             return Ok(result);
         }
-
     }
 }

@@ -1,8 +1,8 @@
-﻿using ECommerceApp.Domain.Entities;
-using ECommerceApp.Application.IRepository;
+﻿using ECommerceApp.Application.IRepository;
+using ECommerceApp.Domain.Entities;
+using ECommerceApp.Domain.ValueObjects;
 using ECommerceApp.Infrastructure.Data;
 using ECommerceApp.Infrastructure.Models;
-using ECommerceApp.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Infrastructure.Repository
@@ -55,21 +55,32 @@ namespace ECommerceApp.Infrastructure.Repository
 
         public async Task<CartEntity?> GetById(int customerId)
         {
-            return await _context.Carts
-                .Where(x => x.CustomerId == customerId)
-                .Select(x => new CartEntity(customerId)
+            var dbCart = await _context.Carts
+                .Include(x => x.Items)
+                .SingleOrDefaultAsync(x => x.CustomerId == customerId);
+
+            if (dbCart is null)
+                return null;
+
+            var cartEntity = new CartEntity(customerId)
+            {
+                Id = dbCart.Id
+            };
+
+            foreach (var ci in dbCart.Items)
+            {
+                var cartItemEntity = new CartItemEntity(
+                    ci.ProductId,
+                    ci.Price,
+                    Quantity.FromInt(ci.Quantity))
                 {
-                    Id = x.Id,
-                    Items = x.Items.Select(ci => new CartItemEntity(
-                        ci.ProductId,
-                        ci.Price,
-                        Quantity.FromInt(ci.Quantity))
-                    {
-                        Id = ci.Id
-                    }
-                    ).ToHashSet()
-                })
-                .SingleOrDefaultAsync();
+                    Id = ci.Id
+                };
+
+                cartEntity.AddItem(cartItemEntity);
+            }
+
+            return cartEntity;
         }
 
         public async Task Update(CartEntity cart)
