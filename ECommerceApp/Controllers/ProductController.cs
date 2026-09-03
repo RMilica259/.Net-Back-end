@@ -1,4 +1,5 @@
-﻿using ECommerceApp.Application.UseCases.Queries.GetProductById;
+﻿using ECommerceApp.Application.UseCases.Queries.GetAllProducts;
+using ECommerceApp.Application.UseCases.Queries.GetProductById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,14 @@ namespace ECommerceApp.Web.Controllers
 
             if (result is null)
                 return NotFound();
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var result = await _mediator.Send(new GetAllProductsRequest());
 
             return Ok(result);
         }

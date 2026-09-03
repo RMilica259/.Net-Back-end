@@ -1,5 +1,6 @@
 ﻿using ECommerceApp.Application.IServices;
 using ECommerceApp.Application.Services;
+using ECommerceApp.Application.UseCases.Queries.GetAllProducts;
 using ECommerceApp.Application.UseCases.Queries.GetCartItem;
 using ECommerceApp.Application.UseCases.Queries.GetProductById;
 using ECommerceApp.Domain.Date;
@@ -16,6 +17,7 @@ namespace ECommerceApp.Web.Extensions
 
             services.AddScoped<IGetCartQuery, GetCartQuery>();
             services.AddScoped<IGetProductByIdQuery, GetProductByIdQuery>();
+            services.AddScoped<IGetAllProductsQuery, GetAllProductsQuery>();
 
             services.AddScoped<IStockAvailability, StockAvailabilityMock>();
 

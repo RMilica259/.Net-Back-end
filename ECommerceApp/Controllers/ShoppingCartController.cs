@@ -1,4 +1,5 @@
 ﻿using ECommerceApp.Application.UseCases.Commands.AddProductToCart;
+using ECommerceApp.Application.UseCases.Commands.ClearCart;
 using ECommerceApp.Application.UseCases.Queries.GetCartItem;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,22 @@ namespace ECommerceApp.Web.Controllers
                 return NotFound();
 
             return Ok(result);
+        }
+
+        [HttpDelete("{customerId:int}/items")]
+        public async Task<IActionResult> ClearCart(int customerId)
+        {
+            var request = new ClearCartRequest
+            {
+                CustomerId = customerId
+            };
+
+            var result = await _mediator.Send(request);
+
+            if (!result.IsSuccessful)
+                return NotFound(result.Message);
+
+            return NoContent();
         }
     }
 }

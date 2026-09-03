@@ -30,13 +30,15 @@ namespace ECommerceApp.Infrastructure.Repository
         public async Task Delete(int customerId)
         {
             var cart = await _context.Carts
-                .Include(x => x.Items)
-                .SingleOrDefaultAsync(x => x.CustomerId == customerId);
+                .Include(c => c.Items)
+                .SingleOrDefaultAsync(c => c.CustomerId == customerId);
 
             if (cart is null)
                 return;
 
-            _context.CartItems.RemoveRange(cart.Items);
+            if (cart.Items.Count > 0)
+                _context.CartItems.RemoveRange(cart.Items);
+
             cart.Total = 0;
 
             await _context.SaveChangesAsync();
