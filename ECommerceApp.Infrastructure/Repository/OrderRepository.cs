@@ -1,7 +1,7 @@
-﻿using ECommerceApp.Infrastructure.Data;
+﻿using ECommerceApp.Application.IRepository;
 using ECommerceApp.Domain.Entities;
+using ECommerceApp.Infrastructure.Data;
 using ECommerceApp.Infrastructure.Models;
-using ECommerceApp.Application.IRepository;
 
 namespace ECommerceApp.Infrastructure.Repository
 {
@@ -28,8 +28,9 @@ namespace ECommerceApp.Infrastructure.Repository
                 },
 
                 PhoneNumber = orderEntity.PhoneNumber,
-                TotalAmount = 0,
-                DiscountAmount = 0 
+                TotalAmount = orderEntity.TotalAmount,
+                DiscountAmount = orderEntity.DiscountAmount,
+                OrderDate = orderEntity.OrderDate
             };
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();

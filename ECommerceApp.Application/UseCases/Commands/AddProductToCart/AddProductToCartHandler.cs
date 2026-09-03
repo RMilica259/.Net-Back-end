@@ -13,7 +13,8 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IProductRepository _productRepository;
         private readonly IStock _stockAvailability;
-        public AddProductToCartHandler(IShoppingCartRepository shoppingCartRepository, IProductRepository productRepository, IStock stockAvailability)
+        public AddProductToCartHandler(IShoppingCartRepository shoppingCartRepository,
+            IProductRepository productRepository, IStock stockAvailability)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _productRepository = productRepository;
@@ -41,10 +42,16 @@ namespace ECommerceApp.Application.UseCases.Commands.AddProductToCart
             if (existingItem == null) totalQuantity = request.Quantity;
             else totalQuantity = existingItem.Quantity.Value + request.Quantity;
 
-            if (!await _stockAvailability.IsQuantityAvailable(product.Quantity.Value, request.ProductId, totalQuantity))
+            if (!await _stockAvailability.IsQuantityAvailable(
+                product.Quantity.Value,
+                request.ProductId,
+                totalQuantity))
                 return Result.Failure("Not enough stock available");
 
-            var cartItem = new CartItemEntity(request.ProductId, product.Price, Quantity.FromInt(request.Quantity));
+            var cartItem = new CartItemEntity(
+                request.ProductId,
+                product.Price,
+                Quantity.FromInt(request.Quantity));
 
             var result = cart.AddItem(cartItem);
 

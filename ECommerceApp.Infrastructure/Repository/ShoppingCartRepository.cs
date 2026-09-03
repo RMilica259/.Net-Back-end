@@ -29,13 +29,17 @@ namespace ECommerceApp.Infrastructure.Repository
 
         public async Task Delete(int customerId)
         {
-            var cartItems = await _context.CartItems.Where(x => x.Cart.CustomerId == customerId).ToListAsync();
+            var cart = await _context.Carts
+                .Include(x => x.Items)
+                .SingleOrDefaultAsync(x => x.CustomerId == customerId);
 
-            if (cartItems.Count > 0)
-            {
-                _context.CartItems.RemoveRange(cartItems);
-                await _context.SaveChangesAsync();
-            }
+            if (cart is null)
+                return;
+
+            _context.CartItems.RemoveRange(cart.Items);
+            cart.Total = 0;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<CartEntity> Create(CartEntity cartEntity)
@@ -104,6 +108,9 @@ namespace ECommerceApp.Infrastructure.Repository
                 }
                 else existing.Quantity = item.Quantity.Value;
             });
+
+            dbCart.Total = cart.Total();
+
             await _context.SaveChangesAsync();
         }
     }
