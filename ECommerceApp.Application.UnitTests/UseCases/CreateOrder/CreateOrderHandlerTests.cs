@@ -3,8 +3,9 @@ using ECommerceApp.Application.IRepository;
 using ECommerceApp.Application.UseCases.Commands.CreateOrder;
 using ECommerceApp.Domain.Date;
 using ECommerceApp.Domain.Entities;
-using Moq;
+using ECommerceApp.Domain.ValueObjects;
 using FluentAssertions;
+using Moq;
 
 namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
 {
@@ -16,12 +17,19 @@ namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
             [Frozen] Mock<IOrderRepository> orderRepositoryMock,
             [Frozen] Mock<IShoppingCartRepository> shoppingCartRepositoryMock,
             [Frozen] Mock<IDateTimeProvider> dateTimeProviderMock,
-            CartEntity cart,
             DateTime now,
             CreateOrderRequest request,
-            CreateOrderHandler sut
-            )
+            CreateOrderHandler sut)
         {
+            var cart = new CartEntity(request.CustomerId);
+
+            var cartItem = new CartItemEntity(
+                17,
+                25m,
+                Quantity.FromInt(2));
+
+            cart.AddItem(cartItem);
+
             shoppingCartRepositoryMock
                 .Setup(x => x.GetById(request.CustomerId))
                 .ReturnsAsync(cart);
@@ -34,12 +42,27 @@ namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
 
             result.IsSuccessful.Should().BeTrue();
 
-            orderRepositoryMock.Verify(x => x.Create(It.Is<OrderEntity>(order => 
-                order.CustomerId == request.CustomerId &&
-                order.TotalAmount == cart.Items.Sum(i => i.TotalPrice()) &&
-                order.OrderDate == now)), Times.Once());
+            orderRepositoryMock.Verify(
+                x => x.Create(It.Is<OrderEntity>(order =>
+                    order.CustomerId == request.CustomerId &&
+                    order.TotalAmount == cart.Total() &&
+                    order.OrderDate == now &&
+                    order.ShippingCity == request.ShippingAddress.City &&
+                    order.ShippingStreet == request.ShippingAddress.Street &&
+                    order.ShippingHouseNumber ==
+                        request.ShippingAddress.HouseNumber &&
+                    order.ShippingZipCode ==
+                        request.ShippingAddress.ZipCode &&
+                    order.Items.Count == 1 &&
+                    order.Items.Single().ProductId == cartItem.ProductId &&
+                    order.Items.Single().UnitPrice == cartItem.Price &&
+                    order.Items.Single().Quantity.Value ==
+                        cartItem.Quantity.Value)),
+                Times.Once());
 
-            shoppingCartRepositoryMock.Verify(x => x.Delete(request.CustomerId), Times.Once());
+            shoppingCartRepositoryMock.Verify(
+                x => x.Delete(request.CustomerId),
+                Times.Once());
         }
 
         [Theory]
@@ -60,6 +83,34 @@ namespace ECommerceApp.Application.UnitTests.UseCases.CreateOrder
             result.IsSuccessful.Should().BeFalse();
 
             orderRepositoryMock.Verify(x => x.Create(It.IsAny<OrderEntity>()), Times.Never());
+        }
+
+        [Theory]
+        [AutoMoqInlineData]
+        public async Task Handle_EmptyShoppingCart_ReturnsFailure(
+            [Frozen] Mock<IShoppingCartRepository> shoppingCartRepositoryMock,
+            [Frozen] Mock<IOrderRepository> orderRepositoryMock,
+            CreateOrderRequest request,
+            CreateOrderHandler sut)
+        {
+            var cart = new CartEntity(request.CustomerId);
+
+            shoppingCartRepositoryMock
+                .Setup(x => x.GetById(request.CustomerId))
+                .ReturnsAsync(cart);
+
+            var result = await sut.Handle(request, default);
+
+            result.IsSuccessful.Should().BeFalse();
+            result.Error!.ErrorCode.Should().Be("CARTT003");
+
+            orderRepositoryMock.Verify(
+                x => x.Create(It.IsAny<OrderEntity>()),
+                Times.Never());
+
+            shoppingCartRepositoryMock.Verify(
+                x => x.Delete(It.IsAny<int>()),
+                Times.Never());
         }
     }
 }

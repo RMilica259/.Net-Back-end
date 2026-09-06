@@ -1,20 +1,26 @@
 ﻿using ECommerceApp.Application.IRepository;
+using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.Date;
 using ECommerceApp.Domain.Entities;
+using ECommerceApp.Domain.Errors;
 using ECommerceApp.Domain.OperationResult;
-using ECommerceApp.Application.Services;
 using MediatR;
 
 namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
 {
-    public class CreateOrderHandler : IRequestHandler<CreateOrderRequest, Result>
+    public class CreateOrderHandler
+        : IRequestHandler<CreateOrderRequest, Result>
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly Discount _discount;
 
-        public CreateOrderHandler(IShoppingCartRepository shoppingCartRepository, IOrderRepository orderRepository, IDateTimeProvider dateTimeProvider, Discount discount)
+        public CreateOrderHandler(
+            IShoppingCartRepository shoppingCartRepository,
+            IOrderRepository orderRepository,
+            IDateTimeProvider dateTimeProvider,
+            Discount discount)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _orderRepository = orderRepository;
@@ -22,37 +28,56 @@ namespace ECommerceApp.Application.UseCases.Commands.CreateOrder
             _discount = discount;
         }
 
-        public async Task<Result> Handle(CreateOrderRequest request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(
+            CreateOrderRequest request,
+            CancellationToken cancellationToken)
         {
-            var cart = await _shoppingCartRepository.GetById(request.CustomerId);
+            var cart = await _shoppingCartRepository
+                .GetById(request.CustomerId);
 
             if (cart == null)
-                return Result.Failure("Shopping cart not found for this customer.");
+            {
+                return Result.Failure(
+                    "Shopping cart not found for this customer.");
+            }
 
+            if (cart.Items.Count == 0)
+            {
+                return Result.Failure(
+                    DomainErrors.Cart.CartIsEmpty());
+            }
 
-            decimal totalAmount = cart.Total();
+            var totalAmount = cart.Total();
+            var orderDate = _dateTimeProvider.UtcNow();
 
-            var discountAmount = _discount.Calculate(totalAmount, request.PhoneNumber, _dateTimeProvider.UtcNow());
+            var discountAmount = _discount.Calculate(
+                totalAmount,
+                request.PhoneNumber,
+                orderDate);
 
-            var address = new AddressEntity(
-                request.ShippingAddress.City,
-                request.ShippingAddress.Street,
-                request.ShippingAddress.HouseNumber,
-                request.ShippingAddress.ZipCode
-            );
+            var orderItems = cart.Items
+                .Select(item => new OrderItemEntity(
+                    item.ProductId,
+                    item.Price,
+                    item.Quantity))
+                .ToList();
 
             var order = new OrderEntity(
                 request.CustomerId,
-                address,
+                request.ShippingAddress.City,
+                request.ShippingAddress.Street,
+                request.ShippingAddress.HouseNumber,
+                request.ShippingAddress.ZipCode,
                 request.PhoneNumber,
                 totalAmount,
                 discountAmount,
-                _dateTimeProvider.UtcNow() 
-            );
+                orderDate,
+                orderItems);
 
             await _orderRepository.Create(order);
 
-            await _shoppingCartRepository.Delete(request.CustomerId);
+            await _shoppingCartRepository.Delete(
+                request.CustomerId);
 
             return Result.Success();
         }

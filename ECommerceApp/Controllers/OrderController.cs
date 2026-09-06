@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ECommerceApp.Application.UseCases.Commands.CreateOrder;
 using MediatR;
-using ECommerceApp.Application.UseCases.Commands.CreateOrder;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Web.Controllers
 {
@@ -19,7 +19,11 @@ namespace ECommerceApp.Web.Controllers
         {
             var result = await _mediator.Send(request);
 
-            if(!result.IsSuccessful) return BadRequest(result.Message);
+            if (!result.IsSuccessful)
+            {
+                return BadRequest(
+                    result.Error?.ErrorMessage ?? result.Message);
+            }
 
             return Ok();
         }

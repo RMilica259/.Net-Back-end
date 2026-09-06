@@ -13,19 +13,30 @@ namespace ECommerceApp.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                   .UseIdentityColumn();
+                .UseIdentityColumn();
 
-            builder.Property(x => x.IsDefault).IsRequired();
+            builder.Property(x => x.CustomerId)
+                .IsRequired();
+
+            builder.Property(x => x.City)
+                .IsRequired();
+
+            builder.Property(x => x.Street)
+                .IsRequired();
+
+            builder.Property(x => x.HouseNumber)
+                .IsRequired();
+
+            builder.Property(x => x.ZipCode)
+                .IsRequired();
+
+            builder.Property(x => x.IsDefault)
+                .IsRequired();
 
             builder.HasOne(x => x.Customer)
                 .WithMany(x => x.Addresses)
                 .HasForeignKey(x => x.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(x => x.Address)
-                .WithMany()
-                .HasForeignKey(x => x.AddressId)
-                .IsRequired();
         }
     }
 }

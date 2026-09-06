@@ -12,21 +12,45 @@ namespace ECommerceApp.Infrastructure.Configurations
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(e => e.Id).UseIdentityColumn();
+            builder.Property(x => x.Id)
+                .UseIdentityColumn();
 
-            builder.Property(e => e.CustomerId).IsRequired();
-            builder.Property(e => e.PhoneNumber).HasMaxLength(10).IsRequired();
-            builder.Property(e => e.TotalAmount).IsRequired();
-            builder.Property(e => e.OrderDate).IsRequired();
+            builder.Property(x => x.CustomerId)
+                .IsRequired();
+
+            builder.Property(x => x.ShippingCity)
+                .IsRequired();
+
+            builder.Property(x => x.ShippingStreet)
+                .IsRequired();
+
+            builder.Property(x => x.ShippingHouseNumber)
+                .IsRequired();
+
+            builder.Property(x => x.ShippingZipCode)
+                .IsRequired();
+
+            builder.Property(x => x.PhoneNumber)
+                .HasMaxLength(10)
+                .IsRequired();
+
+            builder.Property(x => x.TotalAmount)
+                .IsRequired();
+
+            builder.Property(x => x.DiscountAmount)
+                .IsRequired();
+
+            builder.Property(x => x.OrderDate)
+                .IsRequired();
 
             builder.HasOne(x => x.Customer)
-                   .WithMany(x => x.Orders)
-                   .HasForeignKey(x => x.CustomerId);
+                .WithMany(x => x.Orders)
+                .HasForeignKey(x => x.CustomerId);
 
-            builder.HasOne(x => x.Address)
-                   .WithMany()
-                   .HasForeignKey(x => x.AddressId)
-                   .IsRequired();
+            builder.HasMany(x => x.Items)
+                .WithOne(x => x.Order)
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
